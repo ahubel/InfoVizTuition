@@ -27,10 +27,12 @@ function setup(width, height) {
 // Load Tuition
 var tuitions = {
 };
+var tuitionsMax = 0;
 d3.csv("data/tuition.csv", function (data) {
     data.forEach(function (element) {
-        tuitions[element.country] = element.value;
+        tuitions[element.country] = Number(element.value);
     });
+    tuitionsMax = _.max(_.values(tuitions));
 });
 
 // Load Map
@@ -47,13 +49,23 @@ d3.json("data/world-topo-min.json", function (error, world) {
 function loadTuition() {
     topo.forEach(function (element) {
         if (_.has(tuitions, element.properties.name)) {
-            element.properties.value = tuitions[element.properties.name];
-            element.properties.color = "#990000";
+            value = tuitions[element.properties.name];
+            element.properties.value = value;
+            element.properties.color = calculateColor(value);
         } else {
             element.properties.value = undefined;
-            element.properties.color = "#333333";
+            element.properties.color = "#AAAAAA";
         }
     });
+}
+
+// Get color according to the value of tuition
+function calculateColor(value) {
+    if(value == 0) {
+        return "#39528D";
+    } else {
+        return d3.interpolate("#F4B8DA", "#790647")(value / tuitionsMax);
+    }
 }
 
 function draw(topo) {
