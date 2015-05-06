@@ -61,14 +61,14 @@ function loadTuition() {
 
 // Get color according to the value of tuition
 function calculateColor(value) {
-    if(value == 0) {
+    if (value == 0) {
         return "#39528D";
     } else {
         return d3.interpolate("#F4B8DA", "#790647")(value / tuitionsMax);
     }
 }
 
-function draw(topo) {    
+function draw(topo) {
     var country = g.selectAll(".country").data(topo);
     
     country.enter().insert("path").attr("class", "country").attr("d", path).attr("id", function (d, i) {
@@ -90,7 +90,7 @@ function draw(topo) {
             return parseInt(d);
         });
         
-        tooltip.classed("hidden", false).attr("style", "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px").html(tooltipHTML(d.properties.name));
+        tooltip.classed("hidden", false).attr("style", "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px").html(tooltipHTML(d));
     }).on("mouseout", function (d, i) {
         tooltip.classed("hidden", true);
     });
@@ -131,8 +131,13 @@ function move() {
 
 
 // Tooltip
-function tooltipHTML(countryName) {
-    return countryName;
+function tooltipHTML(d) {
+    var html = "";
+    html += d.properties.name;
+    html += "<br />";
+    html += "$";
+    html += d.properties.value;
+    return html;
 }
 
 var throttleTimer;
