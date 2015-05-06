@@ -68,16 +68,7 @@ function calculateColor(value) {
     }
 }
 
-function draw(topo) {
-    
-    svg.append("path").datum(graticule).attr("class", "graticule").attr("d", path);
-    
-    
-    g.append("path").datum({
-        type: "LineString", coordinates:[[-180, 0],[-90, 0],[0, 0],[90, 0],[180, 0]]
-    }).attr("class", "equator").attr("d", path);
-    
-    
+function draw(topo) {    
     var country = g.selectAll(".country").data(topo);
     
     country.enter().insert("path").attr("class", "country").attr("d", path).attr("id", function (d, i) {
