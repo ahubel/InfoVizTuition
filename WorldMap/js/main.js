@@ -79,19 +79,8 @@ function draw(topo) {
         return d.properties.color;
     });
     
-    //offsets for tooltips
-    var offsetL = document.getElementById('container').offsetLeft + 20;
-    var offsetT = document.getElementById('container').offsetTop + 10;
-    
     //tooltips
-    country.on("mousemove", function (d, i) {
-        
-        var mouse = d3.mouse(svg.node()).map(function (d) {
-            return parseInt(d);
-        });
-        
-        tooltip.classed("hidden", false).attr("style", "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px").html(tooltipHTML(d));
-    }).on("mouseout", function (d, i) {
+    country.on("mousemove", mousemove).on("mouseout", function (d, i) {
         tooltip.classed("hidden", true);
     });
 }
@@ -129,15 +118,25 @@ function move() {
     d3.selectAll(".country").style("stroke-width", 1.5 / s);
 }
 
-
-// Tooltip
-function tooltipHTML(d) {
-    var html = "";
-    html += d.properties.name;
-    html += "<br />";
-    html += "$";
-    html += d.properties.value;
-    return html;
+// Tooltips
+function mousemove(d, i) {
+    // Exit if value is unavailable
+    if (d.properties.value == undefined) {
+        return;
+    }
+    
+    // Offsets for tooltips
+    var offsetL = document.getElementById('container').offsetLeft + 20;
+    var offsetT = document.getElementById('container').offsetTop + 10;
+    var mouse = d3.mouse(svg.node()).map(function (d) {
+        return parseInt(d);
+    });
+    
+    var style = "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px";
+    var html = d.properties.name + "<br /> $" + d.properties.value;
+    
+    
+    tooltip.classed("hidden", false).attr("style", style).html(html);
 }
 
 var throttleTimer;
