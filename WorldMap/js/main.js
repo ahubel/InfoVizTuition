@@ -71,7 +71,13 @@ function calculateColor(value) {
 function draw(topo) {
     var country = g.selectAll(".country").data(topo);
     
-    country.enter().insert("path").attr("class", "country").attr("d", path).attr("id", function (d, i) {
+    country.enter().insert("path").attr("class", function (d, i) {
+        if (d.properties.value == undefined) {
+            return "country";
+        } else {
+            return "country with-value";
+        }
+    }).attr("d", path).attr("id", function (d, i) {
         return d.id;
     }).attr("title", function (d, i) {
         return d.properties.name;
@@ -132,11 +138,11 @@ function mousemove(d, i) {
         return parseInt(d);
     });
     
-    var style = "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px";
+    var boxStyle = "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px";
     var html = d.properties.name + "<br /> $" + d.properties.value;
     
     
-    tooltip.classed("hidden", false).attr("style", style).html(html);
+    tooltip.classed("hidden", false).attr("style", boxStyle).html(html);
 }
 
 var throttleTimer;

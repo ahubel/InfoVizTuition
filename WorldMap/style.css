@@ -1,4 +1,4 @@
-.country:hover{
+.country.with-value:hover{
   stroke: #fff;
   stroke-width: 1.5px;
 }
