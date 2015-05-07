@@ -4,7 +4,7 @@ var zoom = d3.behavior.zoom().scaleExtent([1, 9]).on("zoom", move);
 
 
 var width = document.getElementById('map').offsetWidth;
-var height = width / 2;
+var height = width * 0.45;
 
 var topo, projection, path, svg, g;
 
@@ -15,7 +15,7 @@ var tooltip = d3.select("#map").append("div").attr("class", "tooltip hidden");
 setup(width, height);
 
 function setup(width, height) {
-    projection = d3.geo.mercator().translate([(width / 2), (height / 2)]).scale(width / 2 / Math.PI);
+    projection = d3.geo.mercator().translate([(width * 0.5), (height * 0.6)]).scale(width / 2 / Math.PI);
     
     path = d3.geo.path().projection(projection);
     
