@@ -124,7 +124,7 @@ function move() {
     d3.selectAll(".country").style("stroke-width", 1.5 / s);
 }
 
-// Tooltips
+// Tooltips and Change Bar
 function mousemove(d, i) {
     // Exit if value is unavailable
     if (d.properties.value == undefined) {
@@ -138,11 +138,13 @@ function mousemove(d, i) {
         return parseInt(d);
     });
     
+    // Tooltip
     var boxStyle = "left:" +(mouse[0] + offsetL) + "px;top:" +(mouse[1] + offsetT) + "px";
     var html = d.properties.name + "<br /> $" + d.properties.value;
-    
-    
     tooltip.classed("hidden", false).attr("style", boxStyle).html(html);
+    
+    // Change bar graph
+    changeBar(d);
 }
 
 var throttleTimer;
