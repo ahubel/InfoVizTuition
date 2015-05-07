@@ -39,6 +39,19 @@ function changeBar(d) {
     var color = d.properties.color;
     var w = barWidth * (value / tuitionsMax);
     
+    // Exception: ignore US
+    if (name == "United States") {
+        changeBarUS()
+        return;
+    }
+    
+    // Exception: small lable for UK
+    if (name == "United Kingdom") {
+        d3.select("#label-other p").attr("style", "font-size: 20px");
+    } else {
+        d3.select("#label-other p").attr("style", "");
+    }
+    
     // Change bar
     d3.select("#label-other p").text(name);
     if (value > 0) {
@@ -61,4 +74,12 @@ function changeBar(d) {
     d3.select("#value-other").transition()//
     .attr("style", style)//
     .duration(200);
+}
+
+// Function to ignore mouseover to US
+function changeBarUS() {
+    d3.select("#label-other p").text("");
+    d3.select("#value-other p").text("");
+    d3.select("#svg-other").remove();
+    initBarOther();
 }
