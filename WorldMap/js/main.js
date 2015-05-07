@@ -3,14 +3,14 @@ d3.select(window).on("resize", throttle);
 var zoom = d3.behavior.zoom().scaleExtent([1, 9]).on("zoom", move);
 
 
-var width = document.getElementById('container').offsetWidth;
+var width = document.getElementById('map').offsetWidth;
 var height = width / 2;
 
 var topo, projection, path, svg, g;
 
 var graticule = d3.geo.graticule();
 
-var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
+var tooltip = d3.select("#map").append("div").attr("class", "tooltip hidden");
 
 setup(width, height);
 
@@ -19,7 +19,7 @@ function setup(width, height) {
     
     path = d3.geo.path().projection(projection);
     
-    svg = d3.select("#container").append("svg").attr("width", width).attr("height", height).call(zoom).on("click", click).append("g");
+    svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).call(zoom).on("click", click).append("g");
     
     g = svg.append("g");
 }
@@ -93,7 +93,7 @@ function draw(topo) {
 
 
 function redraw() {
-    width = document.getElementById('container').offsetWidth;
+    width = document.getElementById('map').offsetWidth;
     height = width / 2;
     d3.select('svg').remove();
     setup(width, height);
@@ -132,8 +132,8 @@ function mousemove(d, i) {
     }
     
     // Offsets for tooltips
-    var offsetL = document.getElementById('container').offsetLeft + 20;
-    var offsetT = document.getElementById('container').offsetTop + 10;
+    var offsetL = document.getElementById('map').offsetLeft + 20;
+    var offsetT = document.getElementById('map').offsetTop + 10;
     var mouse = d3.mouse(svg.node()).map(function (d) {
         return parseInt(d);
     });
@@ -160,5 +160,3 @@ function click() {
     var latlon = projection.invert(d3.mouse(this));
     console.log(latlon);
 }
-
-//
