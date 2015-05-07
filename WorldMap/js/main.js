@@ -85,10 +85,14 @@ function draw(topo) {
         return d.properties.color;
     });
     
-    //tooltips
+    // Tooltips
     country.on("mousemove", mousemove).on("mouseout", function (d, i) {
         tooltip.classed("hidden", true);
     });
+    
+    // Initialize bar graphs
+    initBarUS();
+    initBarOther();
 }
 
 
