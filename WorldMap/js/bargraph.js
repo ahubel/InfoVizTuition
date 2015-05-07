@@ -32,6 +32,7 @@ function initBarOther() {
     .attr("width", 0).attr("height", barHeight);
 }
 
+// Change bar and move text
 function changeBar(d) {
     var name = d.properties.name;
     var value = d.properties.value;
@@ -47,8 +48,17 @@ function changeBar(d) {
     
     // Move text
     var pos = document.getElementById("svg-other").offsetLeft + w + 20;
-    d3.select("#value-other p").text("$" + value);
+    var style = "left: " + pos + "px;";
+    var text;
+    if (value == 0) {
+        text = "FREE";
+        style += "color: #0B62A4; font-weight: bold;";
+    } else {
+        text = "$" + value;
+    }
+    
+    d3.select("#value-other p").text(text);
     d3.select("#value-other").transition()//
-    .attr("style", "left: " + pos + "px;")//
+    .attr("style", style)//
     .duration(200);
 }
