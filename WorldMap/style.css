@@ -27,6 +27,10 @@ div.tooltip {
   opacity: 0.9; 
   position: absolute;
 }
+div.bar-value {
+  position: absolute;
+  font-size: 24px;
+}
 .country.with-value:hover{
   stroke: #fff;
   stroke-width: 1.5px;
