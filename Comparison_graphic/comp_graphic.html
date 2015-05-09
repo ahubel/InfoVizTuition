@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+
+<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+
+<!-- Basic frame of code based on http://bl.ocks.org/d3noob/8952219 -->
+
+<style>
+
+h1{
+  font-family: 'Oswald', tahoma;
+  font-size: 20px;
+  margin-top: 50px;
+  margin-left: 100px;
+  margin-bottom: 3px;
+}
+
+h5{
+  font-family: 'Oswald', tahoma;
+  font-size: 15px;
+  margin-top: 2px;
+  margin-left: 100px;
+  display: inline-block;
+}
+
+
+.barrect {
+  fill: white;
+  stroke: gray;
+  stroke-width: 0.5;
+  stroke-opacity:0.5;
+}
+
+
+.bartext {
+  fill: #000;
+  font-weight: 200%;
+  font-size : .9em;
+  font-family: 'Oswald', tahoma;
+}
+
+.counter,
+.category_label {
+  fill: #B2B2B2;
+  font-weight: 200%;
+  font-size : 2.3em;
+  font-family: 'Oswald', tahoma;
+}
+
+
+.x {
+  display: none;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+
+}
+
+.x.axis path {
+  display: none;
+}
+
+/*started as a column instead of row, hence name, but this is a container for mouseover pills*/
+#slide_col{
+  width: 1200px;
+  margin-right: 0 auto;
+  margin-left: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+
+/*individual pills containing year*/
+.year{
+  display: inline-block;
+  width:310px;
+  margin-left:40px;
+  margin-right:40px;
+  text-align: center;
+  font-family: 'Oswald', tahoma;
+  font-size: 18px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  background-color: #F5FAFF;
+  cursor:pointer;
+}
+
+.active{
+  background-color: #FFCA7E;
+}
+
+.college_comp{
+  width:400px;
+  margin:0 auto;
+}
+
+.egg_comp{
+  width:400px;
+  display: inline;
+}
+
+.movie_comp{
+  width:400px;
+  display: inline;
+}
+
+.car_comp {
+  width:400px;
+  display: inline;
+}
+
+#bottom_comp{
+  width:1200px;
+  margin:0 auto;
+}
+
+#top_comp {
+  width:1200px;
+  margin:0 auto;
+}
+
+
+
+/*changes color of pills on hover*/
+/*div.year:hover{
+  background-color: white;
+}*/
+
+button{
+  display: inline-block;
+  font-family: 'Oswald', tahoma;
+  cursor: pointer;
+  margin: 1px;
+  border-radius: 2px;
+  text-decoration: none;
+  padding: 5px;
+  font-size: 15px;
+  background-color: #FFF;
+  border: 1px solid black;
+}
+
+button:hover{
+  background-color: #F5FAFF;
+}
+
+#fourteenHypo.year{
+  border-radius: 5px;
+  background-color: #FF817E;
+  border: 2px solid #700300;
+}
+
+#fourteenHypo.year.active{
+  background-color: #BD2E2A;
+}
+
+</style>
+</head>
+<body>
+
+<!-- these call update function on mouseover with appropriate parameter. -->
+  <div id="comp_graphs">
+    <div id="top_comp">
+      <div class="college_comp"></div>
+    </div>
+  <div id="slide_col">
+    <div class="year active" id="eightyfive" onmouseover="updateData(0)">1985</div>
+    <div class="year" id="fourteen" onmouseover="updateData(1)">2014</div>
+    <div class="year" id="fourteenHypo" onclick="updateData(2)">WHAT IF??</div>
+  </div>
+    <div id="bottom_comp">
+      <div class="egg_comp"></div>
+      <div class="movie_comp"></div>
+      <div class="car_comp"></div>
+    <div>
+  </div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  $(".year").mouseover(function(){
+    if (this.id != 'fourteenHypo') {
+      $(this).addClass('active');
+      $(this).siblings().removeClass('active');
+    }
+  });
+  $("#fourteenHypo").click(function(){
+    if (this.id == 'fourteenHypo') {
+
+      $(this).addClass('active');
+      $(this).siblings().removeClass('active');
+    }
+  });
+});
+</script>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+  <script id="collegeCompGraph">
+
+
+   // array variable containing names of columns in csv doc
+   var yr = ["Price_1985","Price_2014","Price_Hypo2014"]
+
+   var yrnum_college = ["1985","2014","2014"]
+
+
+  //estabilshes parameters of svg element
+  var margin = {top: 20, right: 20, bottom: 30, left:100},
+      width = 380 - margin.left - margin.right,
+      height = 325 - margin.top - margin.bottom;
+
+  //location of ordinal scale elements
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var y = d3.scale.linear()
+      .domain([25000,0])
+      .range([0, height]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .ticks(5)
+      .tickFormat(d3.format("$"))
+      .scale(y)
+      .orient("left");
+
+  var canvas = d3.select('.college_comp')
+          .append('svg')
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom);
+
+  //imports data from .csv -- had to set y range constant to account for transitions
+  d3.csv("PriceIncreaseData_College.csv", function(error, data) {
+
+
+
+    var x_domain = x.domain(data.map(function(d) { return d.item; }));
+    var y_domain = y.domain([25000,0]);
+
+  //  x axis. not used. afraid to delete it.
+     var x_axis = canvas.append("g")
+                       .attr("class", "x axis")
+                       .attr("transform", "translate(0," + height + ")")
+                       .call(xAxis)
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // y axis. 
+      var y_axis = canvas.append("g")
+                          .attr("class", "y axis")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .call(yAxis)
+                         .append("text")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 6)
+                          .attr("dy", ".71em");
+                          
+
+
+  // text of price
+    var bartext = canvas.selectAll(".bartext")
+                        .data(data)
+                        .enter()
+                        .append("text")
+                        .attr("class", "bartext")
+                        .attr("y", function(d) { return y(+d.Price_1985) + 5;
+                        })
+                        .attr("x", function(d) {
+                            return x(d.item) + 32;
+                        })
+                        .text( function(d){
+                          return "$" + String(d.Price_1985);
+                        })
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+  //generating tracking icon
+    var icon = canvas.selectAll(".icon")
+                      .data(data)
+                      .enter()
+                      .append("svg:image")
+                      .attr("y", function(d) { 
+                        return y(+d.Price_1985) - 23;
+                      })
+                      .attr("x", function(d) {
+                          return x(d.item) - 18;
+                      })
+                      .attr("xlink:href","mortarboard.png")
+                      .attr("height",50)
+                      .attr("width",50)
+                      .attr("border",1)
+                      .attr("class","icon")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+  //generated faded icons
+      var fadeicon0 = canvas.selectAll(".fadeicon0")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_1985) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","mortarboard.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon0")
+                            .attr("opacity",0.3)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+      var fadeicon1 = canvas.selectAll(".fadeicon1")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_2014) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","mortarboard.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon1")
+                            .attr("opacity",0)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+  //generating counter
+   //  var counter = canvas.selectAll(".counter")
+   //                      .data(data)
+   //                      .enter()
+   //                      .append("text")
+   //                      .transition()
+   //                      .attr("class", "counter")
+   //                      .attr("x", width-255)
+   //                      .attr("y", 15)
+   //                      .text(yrnum_college[0])
+   //                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;  
+   // });
+
+    var category_label = canvas.selectAll(".category_label")
+                                .data(data)
+                                .enter()
+                                .append("text")
+                                .transition()
+                                .attr("class", "category_label")
+                                .attr("x", width-255)
+                                .attr("y", 15)
+                                .text("1 Year of College")
+                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      });
+
+
+
+// //function to move across columns of data -- 
+// //framework from http://bl.ocks.org/d3noob/7030f35b72de721622b8
+
+      function updateData(n) {
+        // console.log(n);
+
+        d3.csv("PriceIncreaseData_College.csv", function(error, data) {
+            x.domain(data.map(function(d) { return d.item; }));
+            y.domain([25000,0]);
+
+        var bartext = canvas.selectAll(".bartext")
+                            .data(data)
+                            .transition() //switches number
+                            .duration(700)
+                            .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) + 32;
+                            })
+                            .text( function(d){
+                              return "$" + d[yr[n]];
+                            });
+
+        var icon = canvas.selectAll(".icon")
+                        .data(data)
+                        .transition()
+                        .duration(700)
+                        .attr("y", function(d) { return y(+d[yr[n]]) - 23;
+                        })
+                        .attr("x", function(d) {
+                          return x(d.item) - 18;
+                        });
+
+        var counter = canvas.selectAll(".counter")
+                            .data(data)
+                            .transition()
+                            .attr("class", "counter")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text(yrnum_college[n]);   
+                          });
+
+
+        d3.csv("PriceIncreaseData_egg.csv", function(error, data) {
+            x.domain(data.map(function(d) { return d.item; }));
+            y.domain([4,0]);
+
+        var bartext = canvas2.selectAll(".bartext")
+                            .data(data)
+                            .transition() //switches number
+                            .duration(700)
+                            .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) + 32;
+                            })
+                            .text( function(d){
+                              return "$" + d[yr[n]];
+                            });
+
+        var icon = canvas2.selectAll(".icon")
+                        .data(data)
+                        .transition()
+                        .duration(700)
+                        .attr("y", function(d) { return y(+d[yr[n]]) - 23;
+                        })
+                        .attr("x", function(d) {
+                          return x(d.item) - 18;
+                        });
+
+        var counter = canvas2.selectAll(".counter")
+                            .data(data)
+                            .transition()
+                            .attr("class", "counter")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text(yrnum[n]);   
+                          });
+
+
+        d3.csv("PriceIncreaseData_Movie.csv", function(error, data) {
+            x.domain(data.map(function(d) { return d.item; }));
+            y.domain([16,0]);
+
+        var bartext = canvas3.selectAll(".bartext")
+                            .data(data)
+                            .transition() //switches number
+                            .duration(700)
+                            .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) + 32;
+                            })
+                            .text( function(d){
+                              return "$" + d[yr[n]];
+                            });
+
+        var icon = canvas3.selectAll(".icon")
+                        .data(data)
+                        .transition()
+                        .duration(700)
+                        .attr("y", function(d) { return y(+d[yr[n]]) - 23;
+                        })
+                        .attr("x", function(d) {
+                          return x(d.item) - 18;
+                        });
+
+        var counter = canvas3.selectAll(".counter")
+                            .data(data)
+                            .transition()
+                            .attr("class", "counter")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text(yrnum[n]);   
+                          });
+
+
+        d3.csv("PriceIncreaseData_Car.csv", function(error, data) {
+            x.domain(data.map(function(d) { return d.item; }));
+            y.domain([55000,0]);
+
+        var bartext = canvas4.selectAll(".bartext")
+                            .data(data)
+                            .transition() //switches number
+                            .duration(700)
+                            .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) + 32;
+                            })
+                            .text( function(d){
+                              return "$" + d[yr[n]];
+                            });
+
+        var icon = canvas4.selectAll(".icon")
+                        .data(data)
+                        .transition()
+                        .duration(700)
+                        .attr("y", function(d) { return y(+d[yr[n]]) - 23;
+                        })
+                        .attr("x", function(d) {
+                          return x(d.item) - 18;
+                        });
+
+        var counter = canvas4.selectAll(".counter")
+                            .data(data)
+                            .transition()
+                            .attr("class", "counter")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text(yrnum[n]);   
+                          });
+      
+        if ( n == 0 ) {
+
+
+          var fadeicon1 = canvas.selectAll(".fadeicon1")
+                                .transition()
+                                .duration(500)
+                                .attr("opacity",0);
+
+          var fadeicon1 = canvas2.selectAll(".fadeicon1")
+                                 .transition()
+                                 .duration(500)
+                                 .attr("opacity",0);
+
+          var fadeicon1 = canvas3.selectAll(".fadeicon1")
+                                 .transition()
+                                 .duration(500)
+                                 .attr("opacity",0);
+
+          var fadeicon1 = canvas4.selectAll(".fadeicon1")
+                                 .transition()
+                                 .duration(500)
+                                 .attr("opacity",0);
+
+        } else {
+
+          var fadeicon1 = canvas.selectAll(".fadeicon1")
+                                .transition()
+                                .delay(700)
+                                .duration(700)
+                                .attr("opacity",0.3);
+
+          var fadeicon1 = canvas2.selectAll(".fadeicon1")
+                                .transition()
+                                .delay(700)
+                                .duration(700)
+                                .attr("opacity",0.3);
+
+          var fadeicon1 = canvas3.selectAll(".fadeicon1")
+                                .transition()
+                                .delay(700)
+                                .duration(700)
+                                .attr("opacity",0.3);
+
+          var fadeicon1 = canvas4.selectAll(".fadeicon1")
+                                .transition()
+                                .delay(700)
+                                .duration(700)
+                                .attr("opacity",0.3);
+
+        };
+        
+
+
+      }
+
+</script>
+
+
+<script id="eggCompGraph">
+
+
+   // array variable containing names of columns in csv doc
+   var yr = ["Price_1985","Price_2014","Price_Hypo2014"]
+
+   var yrnum = ["1985","2014","2014 - Hypothetical"]
+
+
+  //estabilshes parameters of svg element
+  var margin = {top: 20, right: 20, bottom: 30, left:100},
+      width = 380 - margin.left - margin.right,
+      height = 325 - margin.top - margin.bottom;
+
+  //location of ordinal scale elements
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var y = d3.scale.linear()
+      .domain([4,0])
+      .range([0, height]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .ticks(5)
+      .tickFormat(d3.format("$"))
+      .scale(y)
+      .orient("left")
+
+  var canvas2 = d3.select('.egg_comp')
+          .append('svg')
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          
+
+  //imports data from .csv -- had to set y range constant to account for transitions
+  d3.csv("PriceIncreaseData_egg.csv", function(error, data) {
+
+
+
+    var x_domain = x.domain(data.map(function(d) { return d.item; }));
+    var y_domain = y.domain([4,0]);
+
+  //  x axis. not used. afraid to delete it.
+     var x_axis = canvas2.append("g")
+                       .attr("class", "x axis")
+                       .attr("transform", "translate(0," + height + ")")
+                       .call(xAxis)
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // y axis. 
+      var y_axis = canvas2.append("g")
+                          .attr("class", "y axis")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .call(yAxis)
+                         .append("text")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 6)
+                          .attr("dy", ".71em");
+                          
+
+
+  // text of price
+    var bartext = canvas2.selectAll(".bartext")
+                        .data(data)
+                        .enter()
+                        .append("text")
+                        .attr("class", "bartext")
+                        .attr("y", function(d) { return y(+d.Price_1985) + 5;
+                        })
+                        .attr("x", function(d) {
+                            return x(d.item) + 32;
+                        })
+                        .text( function(d){
+                          return "$" + String(d.Price_1985);
+                        })
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+  //generating tracking icon
+    var icon = canvas2.selectAll(".icon")
+                      .data(data)
+                      .enter()
+                      .append("svg:image")
+                      .attr("y", function(d) { 
+                        return y(+d.Price_1985) - 23;
+                      })
+                      .attr("x", function(d) {
+                          return x(d.item) - 18;
+                      })
+                      .attr("xlink:href","dozen_eggs.png")
+                      .attr("height",50)
+                      .attr("width",50)
+                      .attr("border",1)
+                      .attr("class","icon")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+  //generated faded icons
+      var fadeicon0 = canvas2.selectAll(".fadeicon0")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_1985) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","dozen_eggs.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon0")
+                            .attr("opacity",0.3)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+      var fadeicon1 = canvas2.selectAll(".fadeicon1")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_2014) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","dozen_eggs.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon1")
+                            .attr("opacity",0)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+        var category_label = canvas2.selectAll(".category_label")
+                              .data(data)
+                              .enter()
+                              .append("text")
+                              .transition()
+                              .attr("class", "category_label")
+                              .attr("x", width-255)
+                              .attr("y", 15)
+                              .text("Dozen Eggs")
+                              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+  //generating counter
+    // var counter = canvas2.selectAll(".counter")
+    //                     .data(data)
+    //                     .enter()
+    //                     .append("text")
+    //                     .transition()
+    //                     .attr("class", "counter")
+    //                     .attr("x", width-255)
+    //                     .attr("y", 15)
+    //                     .text(yrnum[0])
+    //                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;  
+   
+
+
+
+   });
+
+
+
+
+ </script>
+
+
+<script id="movieCompGraph">
+
+
+   // array variable containing names of columns in csv doc
+   var yr = ["Price_1985","Price_2014","Price_Hypo2014"]
+
+   var yrnum = ["1985","2014","2014 - Hypothetical"]
+
+
+  //estabilshes parameters of svg element
+  var margin = {top: 20, right: 20, bottom: 30, left:100},
+      width = 380 - margin.left - margin.right,
+      height = 325 - margin.top - margin.bottom;
+
+  //location of ordinal scale elements
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var y = d3.scale.linear()
+      .domain([16,0])
+      .range([0, height]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .ticks(5)
+      .tickFormat(d3.format("$"))
+      .scale(y)
+      .orient("left")
+
+  var canvas3 = d3.select('.movie_comp')
+          .append('svg')
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          
+
+  //imports data from .csv -- had to set y range constant to account for transitions
+  d3.csv("PriceIncreaseData_Movie.csv", function(error, data) {
+
+
+
+    var x_domain = x.domain(data.map(function(d) { return d.item; }));
+    var y_domain = y.domain([16,0]);
+
+  //  x axis. not used. afraid to delete it.
+     var x_axis = canvas3.append("g")
+                       .attr("class", "x axis")
+                       .attr("transform", "translate(0," + height + ")")
+                       .call(xAxis)
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // y axis. 
+      var y_axis = canvas3.append("g")
+                          .attr("class", "y axis")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .call(yAxis)
+                         .append("text")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 6)
+                          .attr("dy", ".71em");
+                          
+
+
+  // text of price
+    var bartext = canvas3.selectAll(".bartext")
+                        .data(data)
+                        .enter()
+                        .append("text")
+                        .attr("class", "bartext")
+                        .attr("y", function(d) { return y(+d.Price_1985) + 5;
+                        })
+                        .attr("x", function(d) {
+                            return x(d.item) + 32;
+                        })
+                        .text( function(d){
+                          return "$" + String(d.Price_1985);
+                        })
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+  //generating tracking icon
+    var icon = canvas3.selectAll(".icon")
+                      .data(data)
+                      .enter()
+                      .append("svg:image")
+                      .attr("y", function(d) { 
+                        return y(+d.Price_1985) - 23;
+                      })
+                      .attr("x", function(d) {
+                          return x(d.item) - 18;
+                      })
+                      .attr("xlink:href","movie_ticket.png")
+                      .attr("height",50)
+                      .attr("width",50)
+                      .attr("border",1)
+                      .attr("class","icon")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+  //generated faded icons
+      var fadeicon0 = canvas3.selectAll(".fadeicon0")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_1985) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","movie_ticket.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon0")
+                            .attr("opacity",0.3)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+      var fadeicon1 = canvas3.selectAll(".fadeicon1")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_2014) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","movie_ticket.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon1")
+                            .attr("opacity",0)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+      var category_label = canvas3.selectAll(".category_label")
+                            .data(data)
+                            .enter()
+                            .append("text")
+                            .transition()
+                            .attr("class", "category_label")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text("Movie Ticket")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  //generating counter
+    // var counter = canvas3.selectAll(".counter")
+    //                     .data(data)
+    //                     .enter()
+    //                     .append("text")
+    //                     .transition()
+    //                     .attr("class", "counter")
+    //                     .attr("x", width-255)
+    //                     .attr("y", 15)
+    //                     .text(yrnum[0])
+    //                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;  
+
+   });
+
+
+
+
+ </script>
+
+
+<script id="carMovieGraph">
+
+
+   // array variable containing names of columns in csv doc
+   var yr = ["Price_1985","Price_2014","Price_Hypo2014"]
+
+   var yrnum = ["1985","2014","2014 - Hypothetical"]
+
+
+  //estabilshes parameters of svg element
+  var margin = {top: 20, right: 20, bottom: 30, left:100},
+      width = 380 - margin.left - margin.right,
+      height = 325 - margin.top - margin.bottom;
+
+  //location of ordinal scale elements
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var y = d3.scale.linear()
+      .domain([55000,0])
+      .range([0, height]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .ticks(5)
+      .tickFormat(d3.format("$"))
+      .scale(y)
+      .orient("left")
+
+  var canvas4 = d3.select('.car_comp')
+          .append('svg')
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          
+
+  //imports data from .csv -- had to set y range constant to account for transitions
+  d3.csv("PriceIncreaseData_Car.csv", function(error, data) {
+
+
+
+    var x_domain = x.domain(data.map(function(d) { return d.item; }));
+    var y_domain = y.domain([55000,0]);
+
+  //  x axis. not used. afraid to delete it.
+     var x_axis = canvas4.append("g")
+                       .attr("class", "x axis")
+                       .attr("transform", "translate(0," + height + ")")
+                       .call(xAxis)
+                       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // y axis. 
+      var y_axis = canvas4.append("g")
+                          .attr("class", "y axis")
+                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                          .call(yAxis)
+                         .append("text")
+                          .attr("transform", "rotate(-90)")
+                          .attr("y", 6)
+                          .attr("dy", ".71em");
+                          
+
+
+  // text of price
+    var bartext = canvas4.selectAll(".bartext")
+                        .data(data)
+                        .enter()
+                        .append("text")
+                        .attr("class", "bartext")
+                        .attr("y", function(d) { return y(+d.Price_1985) + 5;
+                        })
+                        .attr("x", function(d) {
+                            return x(d.item) + 32;
+                        })
+                        .text( function(d){
+                          return "$" + String(d.Price_1985);
+                        })
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+  //generating tracking icon
+    var icon = canvas4.selectAll(".icon")
+                      .data(data)
+                      .enter()
+                      .append("svg:image")
+                      .attr("y", function(d) { 
+                        return y(+d.Price_1985) - 23;
+                      })
+                      .attr("x", function(d) {
+                          return x(d.item) - 18;
+                      })
+                      .attr("xlink:href","mustang.png")
+                      .attr("height",50)
+                      .attr("width",50)
+                      .attr("border",1)
+                      .attr("class","icon")
+                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+  //generated faded icons
+      var fadeicon0 = canvas4.selectAll(".fadeicon0")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_1985) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","mustang.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon0")
+                            .attr("opacity",0.3)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+      var fadeicon1 = canvas4.selectAll(".fadeicon1")
+                            .data(data)
+                            .enter()
+                            .append("svg:image")
+                            .attr("y", function(d) { 
+                              return y(+d.Price_2014) - 23;
+                            })
+                            .attr("x", function(d) {
+                                return x(d.item) - 18;
+                            })
+                            .attr("xlink:href","mustang.png")
+                            .attr("height",50)
+                            .attr("width",50)
+                            .attr("border",1)
+                            .attr("class","fadeicon1")
+                            .attr("opacity",0)
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
+
+
+    var category_label = canvas4.selectAll(".category_label")
+                            .data(data)
+                            .enter()
+                            .append("text")
+                            .transition()
+                            .attr("class", "category_label")
+                            .attr("x", width-255)
+                            .attr("y", 15)
+                            .text("Ford Mustang")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  //generating counter
+   //  var counter = canvas4.selectAll(".counter")
+   //                      .data(data)
+   //                      .enter()
+   //                      .append("text")
+   //                      .transition()
+   //                      .attr("class", "counter")
+   //                      .attr("x", width-255)
+   //                      .attr("y", 15)
+   //                      .text(yrnum[0])
+   //                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;  
+   
+
+    });
+
+
+
+
+ </script>
+
+
+</body>
+</html>
