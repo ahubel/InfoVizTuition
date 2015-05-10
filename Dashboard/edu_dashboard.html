@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tuition Dashboard</title>
+	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	<style>
+	#xaxis, #yaxis .domain {
+		fill:black;
+		stroke:1px;
+	}
+	#xaxis text {
+		font-size: 10px;
+	}
+
+	#yaxis text {
+		font-size: 16px;
+		font-family: "Oswald";
+	}
+
+	#expend {
+		margin-left: 150px;
+		display: inline-block;
+		width: 450px;
+		margin-left: 20px;
+	}
+
+	#chars {
+		display: inline-block;
+		width: 250px;
+		height: 500px;
+		margin-left: 20px;
+	}
+
+	#revenue {
+		margin-left: 20px;
+		display: inline-block;
+		width: 450px;
+	}
+
+	#university {
+		margin-left: 300px;
+	}
+
+	#nowdata {
+		font-family: "Oswald"; 
+	}
+
+
+	#thendata {
+		font-family: "Oswald"; 
+	}	
+
+	</style>
+</head>
+<body>
+	<fieldset>
+	    <label for="university">Select University</label>
+	    <select name="university" id="university">
+	      <option value="0">American University</option>
+	      <option value="1">Amherst College</option>
+	      <option value="2">Bard College</option>
+	      <option value="3">Barnard College</option>
+	      <option value="4">Bates College</option>
+	      <option value="5">Baylor University</option>
+	      <option value="6">Beloit College</option>
+	      <option value="7">Bennington College</option>
+	      <option value="8">Bentley University</option>
+	      <option value="9">Boston College</option>
+	      <option value="10">Boston University</option>
+	      <option value="11">Bowdoin College</option>
+	      <option value="12">Brandeis University</option>
+	      <option value="13">Brigham Young University-Provo</option>
+	      <option value="14">Brown University</option>
+	      <option value="15">Bryn Mawr College</option>
+	      <option value="16">California Institute of Technology</option>
+	      <option value="17">California Polytechnic State University-San Luis Obispo</option>
+	      <option value="18">Carleton College</option>
+	      <option value="19">Carnegie Mellon University</option>
+	      <option value="20">Case Western Reserve University</option>
+	      <option value="21">Centre College</option>
+	      <option value="22">Clark University</option>
+	      <option value="23">Clemson University</option>
+	      <option value="24">Colby College</option>
+	      <option value="25">Colgate University</option>
+	      <option value="26">College of the Atlantic</option>
+	      <option value="27">College of the Holy Cross</option>
+	      <option value="28">College of the Ozarks</option>
+	      <option value="29">College of William and Mary</option>
+	      <option value="30">Colorado College</option>
+	      <option value="31">Colorado School of Mines</option>
+	      <option value="32">Columbia University</option>
+	      <option value="33">Connecticut College</option>
+	      <option value="34">Cooper Union</option>
+	      <option value="35">Cornell University</option>
+	      <option value="36">Creighton University</option>
+	      <option value="37">Dartmouth College</option>
+	      <option value="38">Davidson College</option>
+	      <option value="39">Denison University</option>
+	      <option value="40">DePauw University</option>
+	      <option value="41">Dickinson College</option>
+	      <option value="42">Drake University</option>
+	      <option value="43">Duke University</option>
+	      <option value="44">Earlham College</option>
+	      <option value="45">Elon University</option>
+	      <option value="46">Fordham University</option>
+	      <option value="47">Franklin and Marshall College</option>
+	      <option value="48">Furman University</option>
+	      <option value="49">George Washington University</option>
+	      <option value="50">Georgetown University</option>
+	      <option value="51">Georgia Institute of Technology-Main Campus</option>
+	      <option value="52">Gettysburg College</option>
+	      <option value="53">Grinnell College</option>
+	      <option value="54">Hamilton College</option>
+	      <option value="55">Hampden-Sydney College</option>
+	      <option value="56">Hampshire College</option>
+	      <option value="57">Harvard University</option>
+	      <option value="58">Harvey Mudd College</option>
+
+
+	    </select>
+	</fieldset>
+	<div id="revenue">
+	</div>
+	<div id="chars">
+		<img class="ulogo" src="http://i.forbesimg.com/media/lists/colleges/harvey-mudd-college_50x50.jpg">
+	</div>
+	<div id="expend">
+	</div>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+
+
+
+
+
+	<script>
+
+
+		var categories= ['Instruction', 'Administration', 'Scholarships','Research', 'Other'];
+
+
+		var width = 450,
+			height = 500;
+
+		var grid = d3.range(11).map(function(i){
+			return {'x1':0,'y1':0,'x2':0,'y2':480};
+		});
+
+		// var tickVals = grid.map(function(d,i){
+		// 	if(i>0){ return i*20; }
+		// 	else if(i===0){ return "100";}
+		// });
+		
+		function getMillion(n) {
+		    var scale = n / 1000000;
+		    var format, scalef;
+		    
+		    if (scale >= 100) {
+		        format = d3.format(",");
+		        scalef = format(d3.round(scale));
+		    } else if (scale >= 0.01) {
+		        format = d3.format(".2f");
+		        scalef = format(scale);
+		    } else {
+		        scalef = 0;
+		    }
+		    return scalef + "M"
+		}
+
+
+		var canvas = d3.select('#expend')
+						.append('svg')
+						.attr({'width':width,'height':height});
+
+		d3.csv('exp_data.csv', function(data){
+				console.log(data[4].AmericanUniversity93);
+
+			
+				var xscale = d3.scale.linear()
+								.domain([0,207811000])
+								.range([0,width-135]);
+								
+				var yscale = d3.scale.linear()
+								.domain([0,5])
+								.range([60,(height-20)]);
+
+
+
+				var	xAxis = d3.svg.axis();
+					xAxis
+						.orient('bottom')
+						.scale(xscale)
+						.tickSize(1)
+						.ticks(2)
+						.tickFormat(d3.format("s"));
+
+						// .tickValues(tickVals);
+
+				var	yAxis = d3.svg.axis();
+					yAxis
+						.orient('left')
+						.scale(yscale)
+						.tickSize(0)
+						.tickFormat(function(d,i){return categories[i]; })
+						.tickValues(d3.range(20));
+
+				var y_xis = canvas.append('g')
+								  .attr("transform", "translate(100,35)")
+								  .attr('id','yaxis')
+								  .call(yAxis);
+
+				var x_xis = canvas.append('g')
+								  .attr("transform", "translate(100,480)")
+								  .attr('id','xaxis')
+								  .call(xAxis);
+
+				var chartnow = canvas.append('g')
+									.attr("transform", "translate(100,0)")
+									.attr('id','nowdata')
+									.selectAll('rect')
+									.data(data)
+									.enter()
+									.append('rect')
+									.attr('height',19)
+									.attr({'x':0,'y':function(d,i){ return yscale(i)+15; }})
+									.style('fill','blue')
+									.attr("width", function(d) {return xscale(+d.AmericanUniversity13); });
+
+				var chartthen = canvas.append('g')
+									.attr("transform", "translate(100,0)")
+									.attr('id','thendata')
+									.selectAll('rect')
+									.data(data)
+									.enter()
+									.append('rect')
+									.attr('height',19)
+									.attr({'x':0,'y':function(d,i){ return yscale(i)+34; }})
+									.style('fill','gray')
+									.attr("width", function(d) {return xscale(+d.AmericanUniversity93); });
+
+
+				// var transit = d3.select("svg").selectAll("rect")
+				// 				    .data(dollars)
+				// 				    .transition()
+				// 				    .duration(1000) 
+				// 				    .attr("width", function(d) {return xscale(d); });
+
+				var transitext = d3.select('#nowdata')
+									.selectAll('text')
+									.data(data)
+									.enter()
+									.append('text')
+									.attr({'x':function(d) {return xscale(d.AmericanUniversity13)+10; },'y':function(d,i){ return yscale(i)+31; }})
+									.text(function(d){ return "$"+getMillion(d.AmericanUniversity13); }).style({'fill':'#000','font-size':'12px'});
+
+				var transitext = d3.select('#thendata')
+									.selectAll('text')
+									.data(data)
+									.enter()
+									.append('text')
+									.attr({'x':function(d) {return xscale(d.AmericanUniversity93)+10; },'y':function(d,i){ return yscale(i)+50; }})
+									.text(function(d){ return "$"+getMillion(d.AmericanUniversity93); }).style({'fill':'#000','font-size':'12px'});
+
+		});
+
+
+			function updateExp(then,now) {
+
+				d3.csv('exp_data.csv', function(data){
+						// console.log(data[4][then]);
+						// console.log(then);
+						// console.log(now);
+					
+					var xmax = d3.max(data, function(d) { return +d[now]; });
+
+					var xscale = d3.scale.linear()
+									.domain([0, xmax*1.3])
+									.range([0,300]);
+
+					var yscale = d3.scale.linear()
+									.domain([0,5])
+									.range([60,(height-20)]);
+
+					var canvas = d3.select("#expend").transition();
+
+
+					var	xAxis = d3.svg.axis();
+						xAxis
+							.orient('bottom')
+							.scale(xscale)
+							.ticks(2)
+							.tickFormat(d3.format("s"))
+							.tickSize(1);
+
+					var	yAxis = d3.svg.axis();
+						yAxis
+							.orient('right')
+							.scale(yscale)
+							.tickSize(0)
+							.tickFormat(function(d,i){ return categories2[i]; })
+							.tickValues(d3.range(10));
+
+
+					canvas.select('#xaxis')
+										.duration(750)
+									    // .attr("transform", "translate(0,480)")
+									    // .attr('id','xaxis')
+									    .call(xAxis);
+
+					canvas.select('#nowdata')
+										.duration(750)
+										.selectAll("rect")
+										// .attr("transform", "translate(30,40)")
+										.attr({'x':0,'y':function(d,i){ return yscale(i)+15; }})
+										// .attr("width", ((width-135) - xscale(+data[now])))
+										.attr("width", function(d) {return xscale(+d[now]); });
+
+					canvas.select('#thendata')
+										.duration(750)
+										.selectAll("rect")
+										// .attr("transform", "translate(30,40)")
+										.attr({'x':0,'y':function(d,i){ return yscale(i)+34; }})
+										// .attr("width", ((width-135) - xscale(+data[now])))
+										.attr("width", function(d) {return xscale(+d[then]); });
+
+					canvas.select('#nowdata')
+										.selectAll("text")
+										.attr({'x':function(d) {return xscale(+d[now])+10;},'y':function(d,i){ return yscale(i)+31; }})
+										.text(function(d){ return "$"+d[now]; });
+
+					canvas.select('#thendata')
+										.selectAll("text")
+										.attr({'x':function(d) {return xscale(+d[then])+10;},'y':function(d,i){ return yscale(i)+50; }})
+										.text(function(d){ return "$"+d[then]; });
+
+				});
+			}									
+
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script>
+
+		var categories2= ['Tuition','Government','Gifts','Endowment','Other'];
+
+
+		var width = 450,
+			height = 500;
+
+		var canvas2 = d3.select('#revenue')
+						.append('svg')
+						.attr({'width':width,'height':height});
+
+
+		// var grid = d3.range(10).map(function(i){
+		// 	return {'x1':(width-135),'y1':0,'x2':(width-135),'y2':480};
+		// });
+
+		// var tickVals = grid.map(function(d,i){
+		// 	if(i>0){ return i*20; }
+		// 	else if(i===0){ return "100";}
+		// });
+
+			d3.csv('rev_data.csv', function(data){
+					// console.log(data[4].then);
+					// console.log(then);
+					// console.log(now);
+
+					var xscale = d3.scale.linear()
+									.domain([0,495259000])
+									.range([(width-135),0]);
+
+					var yscale = d3.scale.linear()
+									.domain([0,5])
+									.range([60,(height-20)]);
+
+
+					var	xAxis = d3.svg.axis();
+						xAxis
+							.orient('bottom')
+							.scale(xscale)
+							.tickSize(1)
+							.ticks(2);
+							// .tickValues(tickVals);
+
+					var	yAxis = d3.svg.axis();
+						yAxis
+							.orient('right')
+							.scale(yscale)
+							.tickSize(0)
+							.tickFormat(function(d,i){ return categories2[i]; })
+							.tickValues(d3.range(10));
+
+
+
+					var x_xis = canvas2.append('g')
+									  .attr("transform", "translate(0,480)")
+									  .attr('id','xaxis')
+									  .call(xAxis);
+
+					var chartnow = canvas2.append('g')
+										.attr("transform", "translate(0,0)")
+										.attr('id','nowdata')
+										.selectAll('rect')
+										.data(data)
+										.enter()
+										.append('rect')
+										.attr('height',19)
+										.attr({'x':function(d) {return xscale(+d.AmericanUniversity13)+0;},'y':function(d,i){ return yscale(i)-19; }})
+										.style('fill','blue')
+										.attr("width", function(d) {return (width-135) - xscale(+d.AmericanUniversity13); });
+
+					var chartthen = canvas2.append('g')
+										.attr("transform", "translate(0,0)")
+										.attr('id','thendata')
+										.selectAll('rect')
+										.data(data)
+										.enter()
+										.append('rect')
+										.attr('height',19)
+										.attr({'x':function(d) { return xscale(+d.AmericanUniversity93)+0;},'y':function(d,i){ return yscale(i); }})
+										.style('fill','gray')
+										.attr("width", function(d) {return (width-135) - xscale(+d.AmericanUniversity93); });
+
+					var y_xis = canvas2.append('g')
+									    .attr("transform", "translate(315,5)")
+									    .attr('id','yaxis')
+									    .call(yAxis);
+
+
+					// var transit = d3.select("svg").selectAll("rect")
+					// 				    .data(dollars2)
+					// 				    // .transition()
+					// 				    // .duration(1000) 
+					// 				    .attr("width", function(d) {return xscale(d); });
+
+					var transitext = d3.select('#nowdata')
+										.selectAll('text')
+										.data(data)
+										.enter()
+										.append('text')
+										.attr({'x':function(d) {console.log(d.AmericanUniversity13); return xscale(+d.AmericanUniversity13)-10;},'y':function(d,i){ return yscale(i)-5; }})
+										.text(function(d){ return "$"+getMillion(d.AmericanUniversity13); })
+										.style({'fill':'#000','font-size':'12px','text-anchor':'end'});
+
+
+					var transitext = d3.select('#thendata')
+										.selectAll('text')
+										.data(data)
+										.enter()
+										.append('text')
+										.attr({'x':function(d) {return xscale(+d.AmericanUniversity93)-10; },'y':function(d,i){ return yscale(i)+14; }})
+										.text(function(d){ return "$"+getMillion(d.AmericanUniversity93); }).style({'fill':'#000','font-size':'12px', 'text-anchor':'end'});
+
+			});
+
+			function updateRev(then,now) {
+
+				d3.csv('rev_data.csv', function(data){
+						// console.log(data[4][then]);
+						// console.log(then);
+						// console.log(now);
+
+					var xmax = d3.max(data, function(d) { return +d[now]; });
+					
+					var xscale = d3.scale.linear()
+									.domain([0,xmax*1.3])
+									.range([(width-135),0]);
+
+					var yscale = d3.scale.linear()
+									.domain([0,5])
+									.range([60,(height-20)]);
+
+					var canvas2 = d3.select("#revenue").transition();
+
+
+					var	xAxis = d3.svg.axis();
+						xAxis
+							.orient('bottom')
+							.scale(xscale)
+							.ticks(2)
+							.tickFormat(d3.format("s"))
+							.tickSize(1);
+							// .tickValues(tickVals);
+
+					// var	yAxis = d3.svg.axis();
+					// 	yAxis
+					// 		.orient('right')
+					// 		.scale(yscale)
+					// 		.tickSize(0)
+					// 		.tickFormat(function(d,i){ return categories2[i]; })
+					// 		.tickValues(d3.range(10));
+
+
+					// var x_xis = canvas2.append('g')
+					// 				  .attr("transform", "translate(0,480)")
+					// 				  .attr('id','xaxis')
+					// 				  .call(xAxis);
+
+					canvas2.select('#xaxis')
+										.duration(750)
+									    // .attr("transform", "translate(0,480)")
+									    // .attr('id','xaxis')
+									    .call(xAxis);
+
+					canvas2.select('#nowdata')
+										.duration(750)
+										.selectAll("rect")
+										// .attr("transform", "translate(30,40)")
+										.attr({'x':function(d) {return xscale(+d[now])+0;},'y':function(d,i){ return yscale(i)-19; }})
+										// .attr("width", ((width-135) - xscale(+data[now])))
+										.attr("width", function(d) {return (width-135) - xscale(+d[now]); });
+
+					canvas2.select('#thendata')
+										.duration(750)
+										.selectAll("rect")
+										// .attr("transform", "translate(30,40)")
+										.attr({'x':function(d) {return xscale(+d[then])+0;},'y':function(d,i){ return yscale(i); }})
+										// .attr("width", ((width-135) - xscale(+data[now])))
+										.attr("width", function(d) {return (width-135) - xscale(+d[then]); });
+
+					canvas2.select('#nowdata')
+										.selectAll("text")
+										.attr({'x':function(d) {console.log(d[now]); return xscale(+d[now])-10;},'y':function(d,i){ return yscale(i)-5; }})
+										.text(function(d){ return "$"+d[now]; });
+
+					canvas2.select('#thendata')
+										.selectAll("text")
+										.attr({'x':function(d) {return xscale(+d[then])-10; },'y':function(d,i){ return yscale(i)+14; }})
+										.text(function(d){ return "$"+d[then]; });
+
+
+
+					// var y_xis = canvas2.append('g')
+					// 				    .attr("transform", "translate(315,5)")
+					// 				    .attr('id','yaxis')
+					// 				    .call(yAxis);
+
+
+					// var transit = d3.select("svg").selectAll("rect")
+					// 				    .data(dollars2)
+					// 				    // .transition()
+					// 				    // .duration(1000) 
+					// 				    .attr("width", function(d) {return xscale(d); });
+
+					// var transitext = d3.select('#nowdata')
+					// 					.selectAll('text')
+					// 					.data(data)
+					// 					.enter()
+					// 					.append('text')
+					// 					.attr({'x':function(d) {console.log(d[now]); return xscale(+d[now])-10;},'y':function(d,i){ return yscale(i)+14; }})
+					// 					.text(function(d){ return "$"+d[now]; })
+					// 					.style({'fill':'#000','font-size':'12px','text-anchor':'end'});
+
+
+					// var transitext = d3.select('#thendata')
+					// 					.selectAll('text')
+					// 					.data(data)
+					// 					.enter()
+					// 					.append('text')
+					// 					.attr({'x':function(d) {return xscale(+d[then])-10; },'y':function(d,i){ return yscale(i)-5; }})
+					// 					.text(function(d){ return "$"+d[then]; }).style({'fill':'#000','font-size':'12px', 'text-anchor':'end'});
+
+				});
+			}
+		
+
+
+	</script>
+
+	<script type="text/javascript">
+		
+	</script>
+
+	<script>
+
+		var schoolindex=[[0, 'AmericanUniversity93', 'AmericanUniversity13'], [1, 'AmherstCollege93', 'AmherstCollege13'], [2, 'BardCollege93', 'BardCollege13'], [3, 'BarnardCollege93', 'BarnardCollege13'], [4, 'BatesCollege93', 'BatesCollege13'], [5, 'BaylorUniversity93', 'BaylorUniversity13'], [6, 'BeloitCollege93', 'BeloitCollege13'], [7, 'BenningtonCollege93', 'BenningtonCollege13'], [8, 'BentleyUniversity93', 'BentleyUniversity13'], [9, 'BostonCollege93', 'BostonCollege13'], [10, 'BostonUniversity93', 'BostonUniversity13'], [11, 'BowdoinCollege93', 'BowdoinCollege13'], [12, 'BrandeisUniversity93', 'BrandeisUniversity13'], [13, 'BrighamYoungUniversityProvo93', 'BrighamYoungUniversityProvo13'], [14, 'BrownUniversity93', 'BrownUniversity13'], [15, 'BrynMawrCollege93', 'BrynMawrCollege13'], [16, 'CaliforniaInstituteofTechnology93', 'CaliforniaInstituteofTechnology13'], [17, 'CaliforniaPolytechnicStateUniversitySanLuisObispo93', 'CaliforniaPolytechnicStateUniversitySanLuisObispo13'], [18, 'CarletonCollege93', 'CarletonCollege13'], [19, 'CarnegieMellonUniversity93', 'CarnegieMellonUniversity13'], [20, 'CaseWesternReserveUniversity93', 'CaseWesternReserveUniversity13'], [21, 'CentreCollege93', 'CentreCollege13'], [22, 'ClarkUniversity93', 'ClarkUniversity13'], [23, 'ClemsonUniversity93', 'ClemsonUniversity13'], [24, 'ColbyCollege93', 'ColbyCollege13'], [25, 'ColgateUniversity93', 'ColgateUniversity13'], [26, 'CollegeoftheAtlantic93', 'CollegeoftheAtlantic13'], [27, 'CollegeoftheHolyCross93', 'CollegeoftheHolyCross13'], [28, 'CollegeoftheOzarks93', 'CollegeoftheOzarks13'], [29, 'CollegeofWilliamandMary93', 'CollegeofWilliamandMary13'], [30, 'ColoradoCollege93', 'ColoradoCollege13'], [31, 'ColoradoSchoolofMines93', 'ColoradoSchoolofMines13'], [32, 'ColumbiaUniversityintheCityofNewYork93', 'ColumbiaUniversityintheCityofNewYork13'], [33, 'ConnecticutCollege93', 'ConnecticutCollege13'], [34, 'CooperUnionfortheAdvancementofScienceandArt93', 'CooperUnionfortheAdvancementofScienceandArt13'], [35, 'CornellUniversity93', 'CornellUniversity13'], [36, 'CreightonUniversity93', 'CreightonUniversity13'], [37, 'DartmouthCollege93', 'DartmouthCollege13'], [38, 'DavidsonCollege93', 'DavidsonCollege13'], [39, 'DenisonUniversity93', 'DenisonUniversity13'], [40, 'DePauwUniversity93', 'DePauwUniversity13'], [41, 'DickinsonCollege93', 'DickinsonCollege13'], [42, 'DrakeUniversity93', 'DrakeUniversity13'], [43, 'DukeUniversity93', 'DukeUniversity13'], [44, 'EarlhamCollege93', 'EarlhamCollege13'], [45, 'ElonUniversity93', 'ElonUniversity13'], [46, 'FordhamUniversity93', 'FordhamUniversity13'], [47, 'FranklinandMarshallCollege93', 'FranklinandMarshallCollege13'], [48, 'FurmanUniversity93', 'FurmanUniversity13'], [49, 'GeorgeWashingtonUniversity93', 'GeorgeWashingtonUniversity13'], [50, 'GeorgetownUniversity93', 'GeorgetownUniversity13'], [51, 'GeorgiaInstituteofTechnologyMainCampus93', 'GeorgiaInstituteofTechnologyMainCampus13'], [52, 'GettysburgCollege93', 'GettysburgCollege13'], [53, 'GrinnellCollege93', 'GrinnellCollege13'], [54, 'HamiltonCollege93', 'HamiltonCollege13'], [55, 'HampdenSydneyCollege93', 'HampdenSydneyCollege13'], [56, 'HampshireCollege93', 'HampshireCollege13'], [57, 'HarvardUniversity93', 'HarvardUniversity13'], [58, 'HarveyMuddCollege93', 'HarveyMuddCollege13'], [59, 'HaverfordCollege93', 'HaverfordCollege13'], [60, 'HendrixCollege93', 'HendrixCollege13'], [61, 'HobartWilliamSmithColleges93', 'HobartWilliamSmithColleges13'], [62, 'HopeCollege93', 'HopeCollege13'], [63, 'IndianaUniversityBloomington93', 'IndianaUniversityBloomington13'], [64, 'JamesMadisonUniversity93', 'JamesMadisonUniversity13'], [65, 'JohnsHopkinsUniversity93', 'JohnsHopkinsUniversity13'], [66, 'JuniataCollege93', 'JuniataCollege13'], [67, 'KalamazooCollege93', 'KalamazooCollege13'], [68, 'KenyonCollege93', 'KenyonCollege13'], [69, 'KnoxCollege93', 'KnoxCollege13'], [70, 'LafayetteCollege93', 'LafayetteCollege13'], [71, 'LawrenceUniversity93', 'LawrenceUniversity13'], [72, 'LehighUniversity93', 'LehighUniversity13'], [73, 'Lewis&ClarkCollege93', 'Lewis&ClarkCollege13'], [74, 'LoyolaMarymountUniversity93', 'LoyolaMarymountUniversity13'], [75, 'LoyolaUniversityMaryland93', 'LoyolaUniversityMaryland13'], [76, 'MacalesterCollege93', 'MacalesterCollege13'], [77, 'ManhattanCollege93', 'ManhattanCollege13'], [78, 'MassachusettsInstituteofTechnology93', 'MassachusettsInstituteofTechnology13'], [79, 'MiamiUniversityOxford93', 'MiamiUniversityOxford13'], [80, 'MichiganStateUniversity93', 'MichiganStateUniversity13'], [81, 'MiddleburyCollege93', 'MiddleburyCollege13'], [82, 'MountHolyokeCollege93', 'MountHolyokeCollege13'], [83, 'MuhlenbergCollege93', 'MuhlenbergCollege13'], [84, 'NewYorkUniversity93', 'NewYorkUniversity13'], [85, 'NorthCarolinaStateUniversityatRaleigh93', 'NorthCarolinaStateUniversityatRaleigh13'], [86, 'NorthwesternUniversity93', 'NorthwesternUniversity13'], [87, 'OberlinCollege93', 'OberlinCollege13'], [88, 'OccidentalCollege93', 'OccidentalCollege13'], [89, 'OhioStateUniversityMainCampus93', 'OhioStateUniversityMainCampus13'], [90, 'OhioWesleyanUniversity93', 'OhioWesleyanUniversity13'], [91, 'PennsylvaniaStateUniversityMainCampus93', 'PennsylvaniaStateUniversityMainCampus13'], [92, 'PepperdineUniversity93', 'PepperdineUniversity13'], [93, 'PitzerCollege93', 'PitzerCollege13'], [94, 'PomonaCollege93', 'PomonaCollege13'], [95, 'PresbyterianCollege93', 'PresbyterianCollege13'], [96, 'PrincetonUniversity93', 'PrincetonUniversity13'], [97, 'ProvidenceCollege93', 'ProvidenceCollege13'], [98, 'PurdueUniversityMainCampus93', 'PurdueUniversityMainCampus13'], [99, 'ReedCollege93', 'ReedCollege13'], [100, 'RensselaerPolytechnicInstitute93', 'RensselaerPolytechnicInstitute13'], [101, 'RhodesCollege93', 'RhodesCollege13'], [102, 'RiceUniversity93', 'RiceUniversity13'], [103, 'SaintAnselmCollege93', 'SaintAnselmCollege13'], [104, 'SaintLouisUniversity93', 'SaintLouisUniversity13'], [105, "SaintMichael'sCollege93", "SaintMichael'sCollege13"], [106, 'SantaClaraUniversity93', 'SantaClaraUniversity13'], [107, 'SarahLawrenceCollege93', 'SarahLawrenceCollege13'], [108, 'ScrippsCollege93', 'ScrippsCollege13'], [109, 'SewaneeTheUniversityoftheSouth93', 'SewaneeTheUniversityoftheSouth13'], [110, 'SkidmoreCollege93', 'SkidmoreCollege13'], [111, 'SmithCollege93', 'SmithCollege13'], [112, 'SouthernMethodistUniversity93', 'SouthernMethodistUniversity13'], [113, 'SouthwesternUniversity93', 'SouthwesternUniversity13'], [114, "StJohn'sCollege93", "StJohn'sCollege13"], [115, 'StLawrenceUniversity93', 'StLawrenceUniversity13'], [116, 'StOlafCollege93', 'StOlafCollege13'], [117, 'StanfordUniversity93', 'StanfordUniversity13'], [118, 'SUNYatBinghamton93', 'SUNYatBinghamton13'], [119, 'SwarthmoreCollege93', 'SwarthmoreCollege13'], [120, 'SyracuseUniversity93', 'SyracuseUniversity13'], [121, 'TexasA&MUniversityCollegeStation93', 'TexasA&MUniversityCollegeStation13'], [122, 'TheCollegeofWooster93', 'TheCollegeofWooster13'], [123, 'TheUniversityofTexasatAustin93', 'TheUniversityofTexasatAustin13'], [124, 'TransylvaniaUniversity93', 'TransylvaniaUniversity13'], [125, 'TrinityCollege93', 'TrinityCollege13'], [126, 'TrinityUniversity93', 'TrinityUniversity13'], [127, 'TuftsUniversity93', 'TuftsUniversity13'], [128, 'TulaneUniversityofLouisiana93', 'TulaneUniversityofLouisiana13'], [129, 'UnionCollege93', 'UnionCollege13'], [130, 'UnitedStatesAirForceAcademy93', 'UnitedStatesAirForceAcademy13'], [131, 'UnitedStatesCoastGuardAcademy93', 'UnitedStatesCoastGuardAcademy13'], [132, 'UnitedStatesMilitaryAcademy93', 'UnitedStatesMilitaryAcademy13'], [133, 'UnitedStatesNavalAcademy93', 'UnitedStatesNavalAcademy13'], [134, 'UniversityofCaliforniaBerkeley93', 'UniversityofCaliforniaBerkeley13'], [135, 'UniversityofCaliforniaDavis93', 'UniversityofCaliforniaDavis13'], [136, 'UniversityofCaliforniaIrvine93', 'UniversityofCaliforniaIrvine13'], [137, 'UniversityofCaliforniaLosAngeles93', 'UniversityofCaliforniaLosAngeles13'], [138, 'UniversityofCaliforniaSanDiego93', 'UniversityofCaliforniaSanDiego13'], [139, 'UniversityofCaliforniaSantaBarbara93', 'UniversityofCaliforniaSantaBarbara13'], [140, 'UniversityofChicago93', 'UniversityofChicago13'], [141, 'UniversityofColoradoBoulder93', 'UniversityofColoradoBoulder13'], [142, 'UniversityofConnecticut93', 'UniversityofConnecticut13'], [143, 'UniversityofDelaware93', 'UniversityofDelaware13'], [144, 'UniversityofDenver93', 'UniversityofDenver13'], [145, 'UniversityofFlorida93', 'UniversityofFlorida13'], [146, 'UniversityofGeorgia93', 'UniversityofGeorgia13'], [147, 'UniversityofIllinoisatUrbanaChampaign93', 'UniversityofIllinoisatUrbanaChampaign13'], [148, 'UniversityofIowa93', 'UniversityofIowa13'], [149, 'UniversityofMarylandCollegePark93', 'UniversityofMarylandCollegePark13'], [150, 'UniversityofMiami93', 'UniversityofMiami13'], [151, 'UniversityofMichiganAnnArbor93', 'UniversityofMichiganAnnArbor13'], [152, 'UniversityofMinnesotaTwinCities93', 'UniversityofMinnesotaTwinCities13'], [153, 'UniversityofNewHampshireMainCampus93', 'UniversityofNewHampshireMainCampus13'], [154, 'UniversityofNorthCarolinaatChapelHill93', 'UniversityofNorthCarolinaatChapelHill13'], [155, 'UniversityofNotreDame93', 'UniversityofNotreDame13'], [156, 'UniversityofPennsylvania93', 'UniversityofPennsylvania13'], [157, 'UniversityofPittsburghPittsburghCampus93', 'UniversityofPittsburghPittsburghCampus13'], [158, 'UniversityofPortland93', 'UniversityofPortland13'], [159, 'UniversityofPugetSound93', 'UniversityofPugetSound13'], [160, 'UniversityofRichmond93', 'UniversityofRichmond13'], [161, 'UniversityofRochester93', 'UniversityofRochester13'], [162, 'UniversityofSouthCarolinaColumbia93', 'UniversityofSouthCarolinaColumbia13'], [163, 'UniversityofSouthernCalifornia93', 'UniversityofSouthernCalifornia13'], [164, 'UniversityofUtah93', 'UniversityofUtah13'], [165, 'UniversityofVermont93', 'UniversityofVermont13'], [166, 'UniversityofVirginiaMainCampus93', 'UniversityofVirginiaMainCampus13'], [167, 'UniversityofWashingtonSeattleCampus93', 'UniversityofWashingtonSeattleCampus13'], [168, 'UniversityofWisconsinMadison93', 'UniversityofWisconsinMadison13'], [169, 'UniversityofWyoming93', 'UniversityofWyoming13'], [170, 'UrsinusCollege93', 'UrsinusCollege13'], [171, 'VanderbiltUniversity93', 'VanderbiltUniversity13'], [172, 'VassarCollege93', 'VassarCollege13'], [173, 'VillanovaUniversity93', 'VillanovaUniversity13'], [174, 'VirginiaMilitaryInstitute93', 'VirginiaMilitaryInstitute13'], [175, 'VirginiaPolytechnicInstituteandStateUniversity93', 'VirginiaPolytechnicInstituteandStateUniversity13'], [176, 'WabashCollege93', 'WabashCollege13'], [177, 'WakeForestUniversity93', 'WakeForestUniversity13'], [178, 'WashingtonandLeeUniversity93', 'WashingtonandLeeUniversity13'], [179, 'WashingtonUniversityinStLouis93', 'WashingtonUniversityinStLouis13'], [180, 'WellesleyCollege93', 'WellesleyCollege13'], [181, 'WesleyanUniversity93', 'WesleyanUniversity13'], [182, 'WestmontCollege93', 'WestmontCollege13'], [183, 'WheatonCollege93', 'WheatonCollege93'], [184, 'WheatonCollege13', 'WheatonCollege13'], [185, 'WhitmanCollege93', 'WhitmanCollege13'], [186, 'WillametteUniversity93', 'WillametteUniversity13'], [187, 'WilliamsCollege93', 'WilliamsCollege13'], [188, 'WoffordCollege93', 'WoffordCollege13'], [189, 'WorcesterPolytechnicInstitute93', 'WorcesterPolytechnicInstitute13'], [190, 'YaleUniversity93', 'YaleUniversity13'], [191, 'YeshivaUniversity93', 'YeshivaUniversity13']];
+
+		function updateData(sch) {
+			for (i=0; i<schoolindex.length; i++) {
+				
+				if (schoolindex[i][0] == sch) {
+					console.log(schoolindex[i][1]);
+					updateRev(schoolindex[i][1],schoolindex[i][2]);
+					updateExp(schoolindex[i][1],schoolindex[i][2]);
+					// updateExp(i[1],i[2]);
+				}
+			}
+		};
+
+		$('#university').on('change', function() {
+			  var school_index_value = this.value;
+			  updateData(school_index_value);
+			  // alert school_index_value;
+			});
+
+	</script>
+
+</body>
+</html>
