@@ -56,67 +56,6 @@
 	<fieldset>
 	    <label for="university">Select University</label>
 	    <select name="university" id="university">
-	      <option value="0">American University</option>
-	      <option value="1">Amherst College</option>
-	      <option value="2">Bard College</option>
-	      <option value="3">Barnard College</option>
-	      <option value="4">Bates College</option>
-	      <option value="5">Baylor University</option>
-	      <option value="6">Beloit College</option>
-	      <option value="7">Bennington College</option>
-	      <option value="8">Bentley University</option>
-	      <option value="9">Boston College</option>
-	      <option value="10">Boston University</option>
-	      <option value="11">Bowdoin College</option>
-	      <option value="12">Brandeis University</option>
-	      <option value="13">Brigham Young University-Provo</option>
-	      <option value="14">Brown University</option>
-	      <option value="15">Bryn Mawr College</option>
-	      <option value="16">California Institute of Technology</option>
-	      <option value="17">California Polytechnic State University-San Luis Obispo</option>
-	      <option value="18">Carleton College</option>
-	      <option value="19">Carnegie Mellon University</option>
-	      <option value="20">Case Western Reserve University</option>
-	      <option value="21">Centre College</option>
-	      <option value="22">Clark University</option>
-	      <option value="23">Clemson University</option>
-	      <option value="24">Colby College</option>
-	      <option value="25">Colgate University</option>
-	      <option value="26">College of the Atlantic</option>
-	      <option value="27">College of the Holy Cross</option>
-	      <option value="28">College of the Ozarks</option>
-	      <option value="29">College of William and Mary</option>
-	      <option value="30">Colorado College</option>
-	      <option value="31">Colorado School of Mines</option>
-	      <option value="32">Columbia University</option>
-	      <option value="33">Connecticut College</option>
-	      <option value="34">Cooper Union</option>
-	      <option value="35">Cornell University</option>
-	      <option value="36">Creighton University</option>
-	      <option value="37">Dartmouth College</option>
-	      <option value="38">Davidson College</option>
-	      <option value="39">Denison University</option>
-	      <option value="40">DePauw University</option>
-	      <option value="41">Dickinson College</option>
-	      <option value="42">Drake University</option>
-	      <option value="43">Duke University</option>
-	      <option value="44">Earlham College</option>
-	      <option value="45">Elon University</option>
-	      <option value="46">Fordham University</option>
-	      <option value="47">Franklin and Marshall College</option>
-	      <option value="48">Furman University</option>
-	      <option value="49">George Washington University</option>
-	      <option value="50">Georgetown University</option>
-	      <option value="51">Georgia Institute of Technology-Main Campus</option>
-	      <option value="52">Gettysburg College</option>
-	      <option value="53">Grinnell College</option>
-	      <option value="54">Hamilton College</option>
-	      <option value="55">Hampden-Sydney College</option>
-	      <option value="56">Hampshire College</option>
-	      <option value="57">Harvard University</option>
-	      <option value="58">Harvey Mudd College</option>
-
-
 	    </select>
 	</fieldset>
 	<div id="revenue">
@@ -127,6 +66,7 @@
 	<div id="expend">
 	</div>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
 
@@ -135,7 +75,13 @@
 
 
 	<script>
-
+		// Read csv and add universities for the dropdown menu
+		d3.csv("universities.csv", function(data){
+		    _.forEach(data, function(element) {
+		        d3.select("#university").append("option").attr("value", element.value).text(element.name);
+		        console.log(element);
+		    });   
+		});
 
 		var categories= ['Instruction', 'Administration', 'Scholarships','Research', 'Other'];
 
