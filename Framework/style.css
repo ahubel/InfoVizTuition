@@ -1,4 +1,7 @@
-#container {
+.container {
+	width: 1290px;
+	margin-right: auto;
+	margin-left: auto;
 }
 .page-header {
     padding: 30px 0px 50px;
@@ -8,15 +11,17 @@
     font-size: 18px;
 }
 iframe {
-    width: 80%;
-    border: 0px;
+    width: 1250px;
+    margin: auto;
+    border: none;
+    scrolling: "no";
 }
 iframe#worldmap {
-    height: 40vw;
+    height: 42vw;
 }
 iframe#prices {
-    height: 40vw;
+    height: 60vw;
 }
 iframe#budget {
-    height: 40vw;
+    height: 50vw;
 }
