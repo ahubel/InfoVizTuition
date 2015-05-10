@@ -26,15 +26,37 @@
 
 	#chars {
 		display: inline-block;
+		vertical-align: top;
 		width: 250px;
 		height: 500px;
-		margin-left: 20px;
 	}
 
 	#revenue {
 		margin-left: 20px;
 		display: inline-block;
 		width: 450px;
+	}
+
+	.ulogo{
+		width: 50px;
+		height: 50px;
+		display: block;
+		margin: auto;
+		margin-top: 30px;
+	}
+
+	.then{
+		color: gray;
+		font-family: tahoma;
+		font-size: 14px;
+		text-align: center;
+	}
+
+	.now{
+		color: blue;
+		font-family: tahoma;
+		font-size: 14px;
+		text-align: center;
 	}
 
 	#university {
@@ -49,6 +71,14 @@
 	#thendata {
 		font-family: "Oswald"; 
 	}	
+
+	.charlabel{
+		font-family: "Oswald";
+		font-size: 18px;
+		text-align: center;
+	}
+
+
 
 	</style>
 </head>
@@ -123,6 +153,15 @@
 	</div>
 	<div id="chars">
 		<img class="ulogo" src="http://i.forbesimg.com/media/lists/colleges/harvey-mudd-college_50x50.jpg">
+		<h4 class="charlabel">Tuition (Yearly)</h4>
+		<p class="now">40,890</p>
+		<p class="then">28,230</p>
+		<h4 class="charlabel">Enrollment</h4>
+		<p class="now">4,900</p>
+		<p class="then">4,600</p>
+		<h4 class="charlabel">Percent Instructional Personnel</h4>
+		<p class="now">60</p>
+		<p class="then">72</p>
 	</div>
 	<div id="expend">
 	</div>
@@ -327,12 +366,12 @@
 					canvas.select('#nowdata')
 										.selectAll("text")
 										.attr({'x':function(d) {return xscale(+d[now])+10;},'y':function(d,i){ return yscale(i)+31; }})
-										.text(function(d){ return "$"+d[now]; });
+										.text(function(d){ return "$"+getMillion(d[now]); });
 
 					canvas.select('#thendata')
 										.selectAll("text")
 										.attr({'x':function(d) {return xscale(+d[then])+10;},'y':function(d,i){ return yscale(i)+50; }})
-										.text(function(d){ return "$"+d[then]; });
+										.text(function(d){ return "$"+getMillion(d[then]); });
 
 				});
 			}									
@@ -542,12 +581,12 @@
 					canvas2.select('#nowdata')
 										.selectAll("text")
 										.attr({'x':function(d) {console.log(d[now]); return xscale(+d[now])-10;},'y':function(d,i){ return yscale(i)-5; }})
-										.text(function(d){ return "$"+d[now]; });
+										.text(function(d){ return "$"+getMillion(d[now]); });
 
 					canvas2.select('#thendata')
 										.selectAll("text")
 										.attr({'x':function(d) {return xscale(+d[then])-10; },'y':function(d,i){ return yscale(i)+14; }})
-										.text(function(d){ return "$"+d[then]; });
+										.text(function(d){ return "$"+getMillion(d[then]); });
 
 
 
