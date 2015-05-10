@@ -25,21 +25,21 @@ value,name
 23,Clemson University
 24,Colby College
 25,Colgate University
-26,College of the Atlantic
-27,College of the Holy Cross
-28,College of the Ozarks
-29,College of William and Mary
+26,College of William and Mary
+27,College of the Atlantic
+28,College of the Holy Cross
+29,College of the Ozarks
 30,Colorado College
 31,Colorado School of Mines
-32,Columbia University
+32,Columbia University in the City of New York
 33,Connecticut College
-34,Cooper Union
+34,Cooper Union for the Advancement of Science and Art
 35,Cornell University
 36,Creighton University
 37,Dartmouth College
 38,Davidson College
-39,Denison University
-40,DePauw University
+39,DePauw University
+40,Denison University
 41,Dickinson College
 42,Drake University
 43,Duke University
@@ -58,3 +58,136 @@ value,name
 56,Hampshire College
 57,Harvard University
 58,Harvey Mudd College
+59,Haverford College
+60,Hendrix College
+61,Hobart William Smith Colleges
+62,Hope College
+63,Indiana University-Bloomington
+64,James Madison University
+65,Johns Hopkins University
+66,Juniata College
+67,Kalamazoo College
+68,Kenyon College
+69,Knox College
+70,Lafayette College
+71,Lawrence University
+72,Lehigh University
+73,Lewis & Clark College
+74,Loyola Marymount University
+75,Loyola University Maryland
+76,Macalester College
+77,Manhattan College
+78,Massachusetts Institute of Technology
+79,Miami University-Oxford
+80,Michigan State University
+81,Middlebury College
+82,Mount Holyoke College
+83,Muhlenberg College
+84,New York University
+85,North Carolina State University at Raleigh
+86,Northwestern University
+87,Oberlin College
+88,Occidental College
+89,Ohio State University-Main Campus
+90,Ohio Wesleyan University
+91,Pennsylvania State University-Main Campus
+92,Pepperdine University
+93,Pitzer College
+94,Pomona College
+95,Presbyterian College
+96,Princeton University
+97,Providence College
+98,Purdue University-Main Campus
+99,Reed College
+100,Rensselaer Polytechnic Institute
+101,Rhodes College
+102,Rice University
+103,SUNY at Binghamton
+104,Saint Anselm College
+105,Saint Louis University
+106,Saint Michael's College
+107,Santa Clara University
+108,Sarah Lawrence College
+109,Scripps College
+110,Sewanee-The University of the South
+111,Skidmore College
+112,Smith College
+113,Southern Methodist University
+114,Southwestern University
+115,St John's College
+116,St Lawrence University
+117,St Olaf College
+118,Stanford University
+119,Swarthmore College
+120,Syracuse University
+121,Texas A & M University-College Station
+122,The College of Wooster
+123,The University of Texas at Austin
+124,Transylvania University
+125,Trinity College
+126,Trinity University
+127,Tufts University
+128,Tulane University of Louisiana
+129,Union College
+130,United States Air Force Academy
+131,United States Coast Guard Academy
+132,United States Military Academy
+133,United States Naval Academy
+134,University of California-Berkeley
+135,University of California-Davis
+136,University of California-Irvine
+137,University of California-Los Angeles
+138,University of California-San Diego
+139,University of California-Santa Barbara
+140,University of Chicago
+141,University of Colorado Boulder
+142,University of Connecticut
+143,University of Delaware
+144,University of Denver
+145,University of Florida
+146,University of Georgia
+147,University of Illinois at Urbana-Champaign
+148,University of Iowa
+149,University of Maryland-College Park
+150,University of Miami
+151,University of Michigan-Ann Arbor
+152,University of Minnesota-Twin Cities
+153,University of New Hampshire-Main Campus
+154,University of North Carolina at Chapel Hill
+155,University of Notre Dame
+156,University of Pennsylvania
+157,University of Pittsburgh-Pittsburgh Campus
+158,University of Portland
+159,University of Puget Sound
+160,University of Richmond
+161,University of Rochester
+162,University of South Carolina-Columbia
+163,University of Southern California
+164,University of Utah
+165,University of Vermont
+166,University of Virginia-Main Campus
+167,University of Washington-Seattle Campus
+168,University of Wisconsin-Madison
+169,University of Wyoming
+170,Ursinus College
+171,Vanderbilt University
+172,Vassar College
+173,Villanova University
+174,Virginia Military Institute
+175,Virginia Polytechnic Institute and State University
+176,Wabash College
+177,Wake Forest University
+178,Washington University in St Louis
+179,Washington and Lee University
+180,Wellesley College
+181,Wesleyan University
+182,Westmont College
+183,Wheaton College
+184,Wheaton College
+185,Whitman College
+186,Willamette University
+187,Williams College
+188,Wofford College
+189,Worcester Polytechnic Institute
+190,Yale University
+191,Yeshiva University
