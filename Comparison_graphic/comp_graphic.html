@@ -44,7 +44,7 @@ h5{
 .category_label {
   fill: #B2B2B2;
   font-weight: 200%;
-  font-size : 2.3em;
+  font-size : 1.9em;
   font-family: 'Oswald', tahoma;
 }
 
@@ -98,22 +98,22 @@ h5{
 }
 
 .college_comp{
-  width:400px;
-  margin:0 auto;
+  width:300px;
+  display: inline;
 }
 
 .egg_comp{
-  width:400px;
+  width:300px;
   display: inline;
 }
 
 .movie_comp{
-  width:400px;
+  width:300px;
   display: inline;
 }
 
 .car_comp {
-  width:400px;
+  width:300px;
   display: inline;
 }
 
@@ -168,18 +168,19 @@ button:hover{
 <!-- these call update function on mouseover with appropriate parameter. -->
   <div id="comp_graphs">
     <div id="top_comp">
-      <div class="college_comp"></div>
     </div>
-  <div id="slide_col">
-    <div class="year active" id="eightyfive" onmouseover="updateData(0)">1985</div>
-    <div class="year" id="fourteen" onmouseover="updateData(1)">2014</div>
-    <div class="year" id="fourteenHypo" onclick="updateData(2)">WHAT IF??</div>
-  </div>
+
     <div id="bottom_comp">
+      <div class="college_comp"></div>
       <div class="egg_comp"></div>
       <div class="movie_comp"></div>
       <div class="car_comp"></div>
     <div>
+    <div id="slide_col">
+      <div class="year active" id="eightyfive" onmouseover="updateData(0)">1985</div>
+      <div class="year" id="fourteen" onmouseover="updateData(1)">2014</div>
+      <div class="year" id="fourteenHypo" onclick="updateData(2)">WHAT IF??</div>
+    </div>
   </div>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -215,7 +216,7 @@ $(document).ready(function(){
 
   //estabilshes parameters of svg element
   var margin = {top: 20, right: 20, bottom: 30, left:100},
-      width = 380 - margin.left - margin.right,
+      width = 297 - margin.left - margin.right,
       height = 325 - margin.top - margin.bottom;
 
   //location of ordinal scale elements
@@ -361,7 +362,7 @@ $(document).ready(function(){
                                 .append("text")
                                 .transition()
                                 .attr("class", "category_label")
-                                .attr("x", width-255)
+                                .attr("x", width-170)
                                 .attr("y", 15)
                                 .text("1 Year of College")
                                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -407,7 +408,7 @@ $(document).ready(function(){
                             .data(data)
                             .transition()
                             .attr("class", "counter")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text(yrnum_college[n]);   
                           });
@@ -444,7 +445,7 @@ $(document).ready(function(){
                             .data(data)
                             .transition()
                             .attr("class", "counter")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text(yrnum[n]);   
                           });
@@ -481,7 +482,7 @@ $(document).ready(function(){
                             .data(data)
                             .transition()
                             .attr("class", "counter")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text(yrnum[n]);   
                           });
@@ -518,7 +519,7 @@ $(document).ready(function(){
                             .data(data)
                             .transition()
                             .attr("class", "counter")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text(yrnum[n]);   
                           });
@@ -592,7 +593,7 @@ $(document).ready(function(){
 
   //estabilshes parameters of svg element
   var margin = {top: 20, right: 20, bottom: 30, left:100},
-      width = 380 - margin.left - margin.right,
+      width = 297 - margin.left - margin.right,
       height = 325 - margin.top - margin.bottom;
 
   //location of ordinal scale elements
@@ -726,7 +727,7 @@ $(document).ready(function(){
                               .append("text")
                               .transition()
                               .attr("class", "category_label")
-                              .attr("x", width-255)
+                              .attr("x", width-170)
                               .attr("y", 15)
                               .text("Dozen Eggs")
                               .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -767,7 +768,7 @@ $(document).ready(function(){
 
   //estabilshes parameters of svg element
   var margin = {top: 20, right: 20, bottom: 30, left:100},
-      width = 380 - margin.left - margin.right,
+      width = 297 - margin.left - margin.right,
       height = 325 - margin.top - margin.bottom;
 
   //location of ordinal scale elements
@@ -901,7 +902,7 @@ $(document).ready(function(){
                             .append("text")
                             .transition()
                             .attr("class", "category_label")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text("Movie Ticket")
                             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -937,7 +938,7 @@ $(document).ready(function(){
 
   //estabilshes parameters of svg element
   var margin = {top: 20, right: 20, bottom: 30, left:100},
-      width = 380 - margin.left - margin.right,
+      width = 297 - margin.left - margin.right,
       height = 325 - margin.top - margin.bottom;
 
   //location of ordinal scale elements
@@ -1071,7 +1072,7 @@ $(document).ready(function(){
                             .append("text")
                             .transition()
                             .attr("class", "category_label")
-                            .attr("x", width-255)
+                            .attr("x", width-170)
                             .attr("y", 15)
                             .text("Ford Mustang")
                             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
