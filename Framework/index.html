@@ -56,8 +56,21 @@
           color: #000052;
         }
 
+        #isotype{
+          height: 600px;
+          margin-bottom: 100px;
+        }
+
         iframe#prices{
           height: 900px;
+        }
+
+        iframe#worldmap{
+          height: 700px;
+        }
+
+        iframe#budget{
+          height: 800px;
         }
 
   </style>
@@ -76,26 +89,27 @@
     </div>
     
     <!-- Section 1 -->
-    <h2>Comparison with Other Countries</h2>
-    <p class="vignette_desc">Other areas of the world don't seem to have this problem. Mouse over the countries to see how they compare to the US.</p>
+    <h2>Average Tuition Per Semester Compared to Other Countries</h2>
+    <p class="vignette_desc">Other areas of the world don't seem to have this problem. Mouse over the highlighted countries to see how they compare to the US.</p>
     <iframe src="../WorldMap/index.html" id="worldmap">
       <p>Your browser does not support iframes.</p>
     </iframe>
     
     <!-- Section 2 -->
-    <h2>Rising Prices</h2>
+    <h2>Just How Severe Is This Increase?</h2>
     <p class="vignette_desc">What if everything had risen in price as fast as tuition? Here are some hypothetical situations to give you an idea of the increase's severity. (Movie tickets are pretty close, it turns out.) </p>
     <iframe src="../Comparison_graphic/comp_graphic.html" id="prices">
       <p>Your browser does not support iframes.</p>
     </iframe>
     
     <!-- Section 3 -->
-    <h2>Faculty vs. Administration</h2>
-    <img src="../admin_fac.png"></img>
+    <h2>The Faculty-to-Administration Ratio</h2>
+    <p class="vignette_desc">A recent study of the CSU system showed that, between 1975 and 2008, the number of administrators rose by 221% while the number of faculty rose only  </p>
+    <img id="isotype" src="../admin_fac.png"></img>
 
     <!-- Section 4 -->
-    <h2>Income and Expenditure</h2>
-    <p class="vignette_desc">Ever wondered what exactly universities are spending all this tuition on? Ever wonder where else they're getting money from? Explore the financials of universities around the country below!</p>
+    <h2>Revenues and Expenditures</h2>
+    <p class="vignette_desc">But is the increase in administrative personnel the whole story? Find out below by exploring our database of 192 different universities' financials.</p>
     <iframe src="../Dashboard/edu_dashboard.html" id="budget">
       <p>Your browser does not support iframes.</p>
     </iframe>
