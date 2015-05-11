@@ -81,9 +81,9 @@ h5{
 /*individual pills containing year*/
 .year{
   display: inline-block;
-  width:310px;
+  /*width:310px;
   margin-left:40px;
-  margin-right:40px;
+  margin-right:40px;*/
   text-align: center;
   font-family: 'Oswald', tahoma;
   font-size: 18px;
@@ -91,10 +91,6 @@ h5{
   padding-bottom: 7px;
   background-color: #F5FAFF;
   cursor:pointer;
-}
-
-.active{
-  background-color: #FFCA7E;
 }
 
 .college_comp{
@@ -122,9 +118,11 @@ h5{
   margin:0 auto;
 }
 
-#top_comp {
-  width:1200px;
-  margin:0 auto;
+.top_bar {
+  width: 397px;
+  margin-left: 99px;
+  margin-right: 99px;
+  display: inline-block;
 }
 
 
@@ -155,10 +153,23 @@ button:hover{
   border-radius: 5px;
   background-color: #FF817E;
   border: 2px solid #700300;
+  width: 395px;
 }
 
 #fourteenHypo.year.active{
   background-color: #BD2E2A;
+}
+
+#eightyfive,
+#fourteen {
+  border: 1px solid;
+  border-radius: 5px;
+  background-color: white;
+}
+
+#eightyfive.active,
+#fourteen.active {
+  background-color: #FFFF9C;
 }
 
 </style>
@@ -167,20 +178,18 @@ button:hover{
 
 <!-- these call update function on mouseover with appropriate parameter. -->
   <div id="comp_graphs">
-    <div id="top_comp">
+    <div id="slide_col">
+      <div class="year top_bar active" id="eightyfive" onmouseover="updateData(0)">1985</div>
+      <div class="year top_bar" id="fourteen" onmouseover="updateData(1)">2014</div>
     </div>
-
     <div id="bottom_comp">
       <div class="college_comp"></div>
       <div class="egg_comp"></div>
       <div class="movie_comp"></div>
       <div class="car_comp"></div>
     <div>
-    <div id="slide_col">
-      <div class="year active" id="eightyfive" onmouseover="updateData(0)">1985</div>
-      <div class="year" id="fourteen" onmouseover="updateData(1)">2014</div>
-      <div class="year" id="fourteenHypo" onclick="updateData(2)">WHAT IF??</div>
-    </div>
+      <p class="top_bar">LOOK AT ME</p>
+      <div class="year top_bar" id="fourteenHypo" onclick="updateData(2)">WHAT IF??</div>
   </div>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -279,7 +288,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d.Price_1985) + 5;
                         })
                         .attr("x", function(d) {
-                            return x(d.item) + 32;
+                            return x(d.item) + 42;
                         })
                         .text( function(d){
                           return "$" + String(d.Price_1985);
@@ -295,7 +304,7 @@ $(document).ready(function(){
                         return y(+d.Price_1985) - 23;
                       })
                       .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                       })
                       .attr("xlink:href","mortarboard.png")
                       .attr("height",50)
@@ -314,7 +323,7 @@ $(document).ready(function(){
                               return y(+d.Price_1985) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","mortarboard.png")
                             .attr("height",50)
@@ -332,7 +341,7 @@ $(document).ready(function(){
                               return y(+d.Price_2014) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","mortarboard.png")
                             .attr("height",50)
@@ -388,7 +397,7 @@ $(document).ready(function(){
                             .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) + 32;
+                                return x(d.item) + 42;
                             })
                             .text( function(d){
                               return "$" + d[yr[n]];
@@ -401,7 +410,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d[yr[n]]) - 23;
                         })
                         .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                         });
 
         var counter = canvas.selectAll(".counter")
@@ -425,7 +434,7 @@ $(document).ready(function(){
                             .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) + 32;
+                                return x(d.item) + 42;
                             })
                             .text( function(d){
                               return "$" + d[yr[n]];
@@ -438,7 +447,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d[yr[n]]) - 23;
                         })
                         .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                         });
 
         var counter = canvas2.selectAll(".counter")
@@ -462,7 +471,7 @@ $(document).ready(function(){
                             .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) + 32;
+                                return x(d.item) + 42;
                             })
                             .text( function(d){
                               return "$" + d[yr[n]];
@@ -475,7 +484,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d[yr[n]]) - 23;
                         })
                         .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                         });
 
         var counter = canvas3.selectAll(".counter")
@@ -499,7 +508,7 @@ $(document).ready(function(){
                             .attr("y", function(d) { console.log(+d[yr[n]]); return y(+d[yr[n]]) + 5;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) + 32;
+                                return x(d.item) + 42;
                             })
                             .text( function(d){
                               return "$" + d[yr[n]];
@@ -512,7 +521,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d[yr[n]]) - 23;
                         })
                         .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                         });
 
         var counter = canvas4.selectAll(".counter")
@@ -657,7 +666,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d.Price_1985) + 5;
                         })
                         .attr("x", function(d) {
-                            return x(d.item) + 32;
+                            return x(d.item) + 42;
                         })
                         .text( function(d){
                           return "$" + String(d.Price_1985);
@@ -673,7 +682,7 @@ $(document).ready(function(){
                         return y(+d.Price_1985) - 23;
                       })
                       .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                       })
                       .attr("xlink:href","dozen_eggs.png")
                       .attr("height",50)
@@ -692,7 +701,7 @@ $(document).ready(function(){
                               return y(+d.Price_1985) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","dozen_eggs.png")
                             .attr("height",50)
@@ -710,7 +719,7 @@ $(document).ready(function(){
                               return y(+d.Price_2014) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","dozen_eggs.png")
                             .attr("height",50)
@@ -832,7 +841,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d.Price_1985) + 5;
                         })
                         .attr("x", function(d) {
-                            return x(d.item) + 32;
+                            return x(d.item) + 42;
                         })
                         .text( function(d){
                           return "$" + String(d.Price_1985);
@@ -848,7 +857,7 @@ $(document).ready(function(){
                         return y(+d.Price_1985) - 23;
                       })
                       .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                       })
                       .attr("xlink:href","movie_ticket.png")
                       .attr("height",50)
@@ -867,7 +876,7 @@ $(document).ready(function(){
                               return y(+d.Price_1985) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","movie_ticket.png")
                             .attr("height",50)
@@ -885,7 +894,7 @@ $(document).ready(function(){
                               return y(+d.Price_2014) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","movie_ticket.png")
                             .attr("height",50)
@@ -1002,7 +1011,7 @@ $(document).ready(function(){
                         .attr("y", function(d) { return y(+d.Price_1985) + 5;
                         })
                         .attr("x", function(d) {
-                            return x(d.item) + 32;
+                            return x(d.item) + 42;
                         })
                         .text( function(d){
                           return "$" + String(d.Price_1985);
@@ -1018,7 +1027,7 @@ $(document).ready(function(){
                         return y(+d.Price_1985) - 23;
                       })
                       .attr("x", function(d) {
-                          return x(d.item) - 18;
+                          return x(d.item) - 8;
                       })
                       .attr("xlink:href","mustang.png")
                       .attr("height",50)
@@ -1037,7 +1046,7 @@ $(document).ready(function(){
                               return y(+d.Price_1985) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","mustang.png")
                             .attr("height",50)
@@ -1055,7 +1064,7 @@ $(document).ready(function(){
                               return y(+d.Price_2014) - 23;
                             })
                             .attr("x", function(d) {
-                                return x(d.item) - 18;
+                                return x(d.item) - 8;
                             })
                             .attr("xlink:href","mustang.png")
                             .attr("height",50)
@@ -1086,7 +1095,7 @@ $(document).ready(function(){
    //                      .attr("class", "counter")
    //                      .attr("x", width-255)
    //                      .attr("y", 15)
-   //                      .text(yrnum[0])
+   //                      .text(yrnuicon[0])
    //                      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;  
    
 

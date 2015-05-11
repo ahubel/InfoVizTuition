@@ -61,6 +61,12 @@
 		height: 60px;
 	}
 
+	.pub_frame {
+		height: 26px;
+		font-style: italic;
+		font-family: "Oswald";
+	}
+
 	fieldset{
 		border: 0px;
 		text-align: center;
@@ -205,6 +211,7 @@
         
 		<svg id="schoolname"></svg>
 		<svg class="ulogoframe"></svg>
+		<svg class="pub_frame"></svg>
 		<h4 class="charlabel">Tuition (Yearly)</h4>
 		<svg class="tuitionframe"></svg>
 <!-- 		<p class="now" id="tuit13">40,890</p>
@@ -332,6 +339,16 @@
 		    	.style("text-anchor","middle")
 		    	.style("fill","blue");;
 
+		    var pub_priv = d3.select(".pub_frame")
+		    	.selectAll("pub_priv")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","pub_priv")
+		    	.attr("x",100)
+		    	.attr("y",25)
+		    	.text(data[2][0])
+
 		        
 		});
 
@@ -369,6 +386,10 @@
 			d3.select(".personframe")
 				.selectAll(".acad13")
 				.remove();
+
+			d3.select(".pub_frame")
+				.selectAll(".pub_priv")
+				.remove()
 
 
 		d3.csv("centerdata.csv", function(data){
@@ -469,6 +490,16 @@
 		    	.text(make_percent(Number(data[8][n])/(Number(data[8][n])+Number(data[9][n]))))
 		    	.style("text-anchor","middle")
 		    	.style("fill","blue");
+
+		   var pub_priv = d3.select(".pub_frame")
+		    	.selectAll("pub_priv")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","pub_priv")
+		    	.attr("x",100)
+		    	.attr("y",25)
+		    	.text(data[2][n])
 
 		}
 		)};
