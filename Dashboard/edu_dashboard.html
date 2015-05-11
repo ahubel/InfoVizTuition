@@ -498,7 +498,7 @@
 						.tickValues(d3.range(20));
 
 				var y_xis = canvas.append('g')
-								  .attr("transform", "translate(100,35)")
+								  .attr("transform", "translate(100,5)")
 								  .attr('id','yaxis')
 								  .call(yAxis);
 
@@ -515,7 +515,7 @@
 									.enter()
 									.append('rect')
 									.attr('height',19)
-									.attr({'x':0,'y':function(d,i){ return yscale(i)+15; }})
+									.attr({'x':0,'y':function(d,i){ return yscale(i)-19; }})
 									.style('fill','blue')
 									.attr("width", function(d) {return xscale(+d.AmericanUniversity13); });
 
@@ -527,7 +527,7 @@
 									.enter()
 									.append('rect')
 									.attr('height',19)
-									.attr({'x':0,'y':function(d,i){ return yscale(i)+34; }})
+									.attr({'x':0,'y':function(d,i){ return yscale(i); }})
 									.style('fill','gray')
 									.attr("width", function(d) {return xscale(+d.AmericanUniversity93); });
 
@@ -543,7 +543,7 @@
 									.data(data)
 									.enter()
 									.append('text')
-									.attr({'x':function(d) {return xscale(d.AmericanUniversity13)+10; },'y':function(d,i){ return yscale(i)+31; }})
+									.attr({'x':function(d) {return xscale(d.AmericanUniversity13)+10; },'y':function(d,i){ return yscale(i)-5; }})
 									.text(function(d){ return "$"+getMillion(d.AmericanUniversity13); }).style({'fill':'#000','font-size':'12px'});
 
 				var transitext = d3.select('#thendata')
@@ -551,7 +551,7 @@
 									.data(data)
 									.enter()
 									.append('text')
-									.attr({'x':function(d) {return xscale(d.AmericanUniversity93)+10; },'y':function(d,i){ return yscale(i)+50; }})
+									.attr({'x':function(d) {return xscale(d.AmericanUniversity93)+10; },'y':function(d,i){ return yscale(i)+14; }})
 									.text(function(d){ return "$"+getMillion(d.AmericanUniversity93); }).style({'fill':'#000','font-size':'12px'});
 
 		});
@@ -604,7 +604,7 @@
 										.duration(750)
 										.selectAll("rect")
 										// .attr("transform", "translate(30,40)")
-										.attr({'x':0,'y':function(d,i){ return yscale(i)+15; }})
+										.attr({'x':0,'y':function(d,i){ return yscale(i)-19; }})
 										// .attr("width", ((width-135) - xscale(+data[now])))
 										.attr("width", function(d) {return xscale(+d[now]); });
 
@@ -612,18 +612,18 @@
 										.duration(750)
 										.selectAll("rect")
 										// .attr("transform", "translate(30,40)")
-										.attr({'x':0,'y':function(d,i){ return yscale(i)+34; }})
+										.attr({'x':0,'y':function(d,i){ return yscale(i); }})
 										// .attr("width", ((width-135) - xscale(+data[now])))
 										.attr("width", function(d) {return xscale(+d[then]); });
 
 					canvas.select('#nowdata')
 										.selectAll("text")
-										.attr({'x':function(d) {return xscale(+d[now])+10;},'y':function(d,i){ return yscale(i)+31; }})
+										.attr({'x':function(d) {return xscale(+d[now])-5;},'y':function(d,i){ return yscale(i)+31; }})
 										.text(function(d){ return "$"+getMillion(d[now]); });
 
 					canvas.select('#thendata')
 										.selectAll("text")
-										.attr({'x':function(d) {return xscale(+d[then])+10;},'y':function(d,i){ return yscale(i)+50; }})
+										.attr({'x':function(d) {return xscale(+d[then])+14;},'y':function(d,i){ return yscale(i)+50; }})
 										.text(function(d){ return "$"+getMillion(d[then]); });
 
 				});
