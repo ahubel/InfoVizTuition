@@ -123,7 +123,7 @@
 <!-- 		<p class="now" id="tuit13">4,900</p>
 		<p class="then" id="tuit93">4,600</p> -->
 		<h4 class="charlabel">Percent Instructional Personnel</h4>
-		<svg class="person_frame"></svg>
+		<svg class="personframe"></svg>
 <!-- 		<p class="now" id="pct13">60</p>
 		<p class="then" id="pct93">72</p> -->
 	</div>
@@ -188,6 +188,53 @@
 		    	.attr("y",140)
 		    	.text(data[6][0])
 		    	.style("text-anchor","middle");
+
+		    var enroll13 = d3.select(".enrollmentframe")
+		    	.selectAll("enroll13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","enroll13")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(data[3][0])
+		    	.style("text-anchor","middle");
+
+		    var enroll93 = d3.select(".enrollmentframe")
+		    	.selectAll("enroll93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","enroll93")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(data[7][0])
+		    	.style("text-anchor","middle");
+
+		    var make_percent = d3.format("%")
+
+		    var tuition93 = d3.select(".personframe")
+		    	.selectAll("acad93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","acad93")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(make_percent(Number(data[4][0])/(Number(data[4][0])+Number(data[5][0]))))
+		    	.style("text-anchor","middle");
+
+		    var tuition93 = d3.select(".personframe")
+		    	.selectAll("acad13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","acad13")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(make_percent(Number(data[8][0])/(Number(data[8][0])+Number(data[9][0]))))
+		    	.style("text-anchor","middle");
+
 		        
 		});
 
@@ -210,6 +257,21 @@
 				.selectAll(".tuition93")
 				.remove();
 
+			d3.select(".enrollmentframe")
+				.selectAll(".enroll93")
+				.remove();
+
+			d3.select(".enrollmentframe")
+				.selectAll(".enroll13")
+				.remove();
+
+			d3.select(".personframe")
+				.selectAll(".acad93")
+				.remove();
+
+			d3.select(".personframe")
+				.selectAll(".acad13")
+				.remove();
 
 
 		d3.csv("centerdata.csv", function(data){
@@ -258,6 +320,53 @@
 		    	.attr("y",140)
 		    	.text(data[6][n])
 		    	.style("text-anchor","middle");
+
+		    var tuition13 = d3.select(".enrollmentframe")
+		    	.selectAll("enroll13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","enroll13")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(data[3][n])
+		    	.style("text-anchor","middle");
+
+		    var tuition93 = d3.select(".enrollmentframe")
+		    	.selectAll("enroll93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","enroll93")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(data[7][n])
+		    	.style("text-anchor","middle");
+
+		    var make_percent = d3.format("%")
+
+		    var tuition93 = d3.select(".personframe")
+		    	.selectAll("acad93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","acad93")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(make_percent(Number(data[4][n])/(Number(data[4][n])+Number(data[5][n]))))
+		    	.style("text-anchor","middle");
+
+		    var tuition93 = d3.select(".personframe")
+		    	.selectAll("acad13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","acad13")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(make_percent(Number(data[8][n])/(Number(data[8][n])+Number(data[9][n]))))
+		    	.style("text-anchor","middle");
+
 		}
 		)};
 
