@@ -618,12 +618,12 @@
 
 					canvas.select('#nowdata')
 										.selectAll("text")
-										.attr({'x':function(d) {return xscale(+d[now])-5;},'y':function(d,i){ return yscale(i)+31; }})
+										.attr({'x':function(d) {return xscale(+d[now])+10;},'y':function(d,i){ return yscale(i)-5; }})
 										.text(function(d){ return "$"+getMillion(d[now]); });
 
 					canvas.select('#thendata')
 										.selectAll("text")
-										.attr({'x':function(d) {return xscale(+d[then])+14;},'y':function(d,i){ return yscale(i)+50; }})
+										.attr({'x':function(d) {return xscale(+d[then])+10;},'y':function(d,i){ return yscale(i)+14; }})
 										.text(function(d){ return "$"+getMillion(d[then]); });
 
 				});
