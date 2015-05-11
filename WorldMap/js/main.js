@@ -1,6 +1,6 @@
 d3.select(window).on("resize", throttle);
 
-var zoom = d3.behavior.zoom().scaleExtent([1, 9]).on("zoom", move);
+//var zoom = d3.behavior.zoom().scaleExtent([1, 9]).on("zoom", move);
 
 
 var width = document.getElementById('map').offsetWidth;
@@ -19,7 +19,8 @@ function setup(width, height) {
     
     path = d3.geo.path().projection(projection);
     
-    svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).call(zoom).on("click", click).append("g");
+    //svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).call(zoom).on("click", click).append("g");
+    svg = d3.select("#map").append("svg").attr("width", width).attr("height", height).append("g");
     
     g = svg.append("g");
 }
@@ -121,7 +122,7 @@ function move() {
     h * (s - 1) + h * s,
     Math.max(height * (1 - s) - h * s, t[1]));
     
-    zoom.translate(t);
+    //zoom.translate(t);
     g.attr("transform", "translate(" + t + ")scale(" + s + ")");
     
     //adjust the country hover stroke width based on zoom level
