@@ -83,8 +83,11 @@
 	}
 
 	.schoolname{
+		width: 248px;
+		height: 100px;
 		font-family: "Oswald";
 		text-align: center;
+		font-size: 24px;
 	}
 
 	.chartheader{
@@ -108,17 +111,18 @@
 		<h1 class="chartheader">REVENUES</h1>
 	</div>
 	<div id="chars">
-		<h2 class="schoolname">Harvey Mudd College</h2>
-		<img class="ulogo" src="http://i.forbesimg.com/media/lists/colleges/harvey-mudd-college_50x50.jpg">
+
+		<svg id="schoolname"></svg>
+		<svg class="ulogoframe"></svg>
 		<h4 class="charlabel">Tuition (Yearly)</h4>
-		<p class="now">40,890</p>
-		<p class="then">28,230</p>
+		<p class="now" id="tuit13">40,890</p>
+		<p class="then" id="tuit93">28,230</p>
 		<h4 class="charlabel">Enrollment</h4>
-		<p class="now">4,900</p>
-		<p class="then">4,600</p>
+		<p class="now" id="tuit13">4,900</p>
+		<p class="then" id="tuit93">4,600</p>
 		<h4 class="charlabel">Percent Instructional Personnel</h4>
-		<p class="now">60</p>
-		<p class="then">72</p>
+		<p class="now" id="pct13">60</p>
+		<p class="then" id="pct93">72</p>
 	</div>
 	<div id="expend">
 		<h1 class="chartheader">EXPENDITURES</h1>
@@ -128,13 +132,47 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
 
+	<script>
+
+	</script>
+
+	<script>
+		d3.csv("centerdata.csv", function(data){
+			console.log(data[0][0]);
+
+			var ulogo = d3.select(".ulogoframe")
+				.selectAll("image")
+				.data(data)
+				.enter()
+			    .append("svg:image")
+		        .attr("xlink:href", data[1][0])
+		        .attr("class","ulogo")
+		        .attr("height",50)
+		        .attr("width",50)
+		        .attr("x",100)
+		        .attr("y",50);
+
+		    var utitle = d3.select("#schoolname")
+		    	.selectAll("text")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","schoolname")
+		    	.attr("x",124)
+		    	.attr("y",130)
+		    	.text(data[0][0])
+		    	.style("text-anchor","middle");
+		        
+		});
+
+	</script>
+
 
 	<script>
 		// Read csv and add universities for the dropdown menu
 		d3.csv("universities.csv", function(data){
 		    _.forEach(data, function(element) {
 		        d3.select("#university").append("option").attr("value", element.value).text(element.name);
-		        console.log(element);
 		    });   
 		});
 
