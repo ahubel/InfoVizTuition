@@ -1,30 +1,90 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<title>D3 World Map Template | TechSlides</title>
+<title>The Tuition Inquisition</title>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
+  <link href='http://fonts.googleapis.com/css?family=Creepster' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+
+  <style>
+        .title_desc{
+          font-size: 16px;
+          width: 700px;
+          margin: auto;
+          color: #2F4F4F;
+          padding: 35px;
+          font-family: "Cabin";
+          background-color: #ededed;
+        }
+
+        .vignette_desc{
+          font-size: 16px;
+          width: 700px;
+          margin: auto;
+          color: #2F4F4F;
+          font-family: "Cabin";
+          margin-bottom: 25px;
+        }
+
+        h1{
+          font-family: "Creepster";
+          font-size: 75px;
+          color: #000052;
+          margin-top: 100px;
+        }
+
+        h2{
+          font-family: "Oswald";
+        }
+
+        li{
+          font-family: "Oswald";
+          color: #2F4F4F;
+        }
+
+        .page-header{
+          height: 100vh;
+        }
+
+        .arrow{
+          font-size: 40px;
+          margin: auto;
+          margin-top: 40px;
+          color: #000052;
+        }
+
+        iframe#prices{
+          height: 900px;
+        }
+
+  </style>
 </head>
 <body>
   <div class="container text-center">
     <div class="page-header">
-      <h1>College Tuition in the United States</h1>
+      <h1>The Tuition Inquisition</h1>
+      <p class="title_desc">Over the past few decades, the cost of college has increased at an alarming rate, leading to severe problems with student debt in the country. Why did this happen? Some say that it's simply supply and demand. Some say it's university administrators lining their pockets. But like other realities, it's not always that simple. Below are some different ways of looking at tuition increases.</p>
       <ul class="list-inline">
         <li>David Eicke</li>
         <li>Alec Hubel</li>
         <li>Yu Suzuki</li>
       </ul>
+      <p class="arrow">&darr;</p>
     </div>
     
     <!-- Section 1 -->
     <h2>Comparison with Other Countries</h2>
+    <p class="vignette_desc">Other areas of the world don't seem to have this problem. Mouse over the countries to see how they compare to the US.</p>
     <iframe src="../WorldMap/index.html" id="worldmap">
       <p>Your browser does not support iframes.</p>
     </iframe>
     
     <!-- Section 2 -->
     <h2>Rising Prices</h2>
+    <p class="vignette_desc">What if everything had risen in price as fast as tuition? Here are some hypothetical situations to give you an idea of the increase's severity. (Movie tickets are pretty close, it turns out.) </p>
     <iframe src="../Comparison_graphic/comp_graphic.html" id="prices">
       <p>Your browser does not support iframes.</p>
     </iframe>
@@ -35,6 +95,7 @@
 
     <!-- Section 4 -->
     <h2>Income and Expenditure</h2>
+    <p class="vignette_desc">Ever wondered what exactly universities are spending all this tuition on? Ever wonder where else they're getting money from? Explore the financials of universities around the country below!</p>
     <iframe src="../Dashboard/edu_dashboard.html" id="budget">
       <p>Your browser does not support iframes.</p>
     </iframe>
