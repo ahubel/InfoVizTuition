@@ -45,6 +45,22 @@
 		margin-top: 30px;
 	}
 
+	.ulogoframe {
+		height: 60px;
+	}
+
+	.tuitionframe {
+		height: 60px;
+	}
+
+	.enrollmentframe {
+		height: 60px;
+	}
+
+	.personframe {
+		height: 60px;
+	}
+
 	.then{
 		color: gray;
 		font-family: tahoma;
@@ -97,7 +113,26 @@
 		color: gray;
 	}
 
+	.tuition13,
+	.tuition93,
+	.enroll13,
+	.enroll93,
+	.acad13,
+	.acad93 {
+		font-family: "Oswald";
+	}
 
+	.tuition93,
+	.enroll93,
+	.acad93 {
+		color: gray;
+	}
+
+	.tuition13,
+	.enroll13,
+	.acad13 {
+		color: blue;
+	}
 
 	</style>
 </head>
@@ -154,7 +189,7 @@
 		        .attr("height",50)
 		        .attr("width",50)
 		        .attr("x",100)
-		        .attr("y",50);
+		        .attr("y",10);
 
 		    var utitle = d3.select("#schoolname")
 		    	.selectAll("text")
@@ -174,9 +209,10 @@
 		    	.append("text")
 		    	.attr("class","tuition13")
 		    	.attr("x",124)
-		    	.attr("y",110)
+		    	.attr("y",15)
 		    	.text(data[10][0])
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");
 
 		    var tuition93 = d3.select(".tuitionframe")
 		    	.selectAll("tuition93")
@@ -185,9 +221,10 @@
 		    	.append("text")
 		    	.attr("class","tuition93")
 		    	.attr("x",124)
-		    	.attr("y",140)
+		    	.attr("y",45)
 		    	.text(data[6][0])
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
 		    var enroll13 = d3.select(".enrollmentframe")
 		    	.selectAll("enroll13")
@@ -196,9 +233,10 @@
 		    	.append("text")
 		    	.attr("class","enroll13")
 		    	.attr("x",124)
-		    	.attr("y",110)
-		    	.text(data[3][0])
-		    	.style("text-anchor","middle");
+		    	.attr("y",15)
+		    	.text(data[7][0])
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");;
 
 		    var enroll93 = d3.select(".enrollmentframe")
 		    	.selectAll("enroll93")
@@ -207,33 +245,36 @@
 		    	.append("text")
 		    	.attr("class","enroll93")
 		    	.attr("x",124)
-		    	.attr("y",140)
-		    	.text(data[7][0])
-		    	.style("text-anchor","middle");
+		    	.attr("y",45)
+		    	.text(data[3][0])
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
 		    var make_percent = d3.format("%")
 
-		    var tuition93 = d3.select(".personframe")
+		    var person93 = d3.select(".personframe")
 		    	.selectAll("acad93")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","acad93")
 		    	.attr("x",124)
-		    	.attr("y",140)
+		    	.attr("y",45)
 		    	.text(make_percent(Number(data[4][0])/(Number(data[4][0])+Number(data[5][0]))))
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
-		    var tuition93 = d3.select(".personframe")
+		    var person13 = d3.select(".personframe")
 		    	.selectAll("acad13")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","acad13")
 		    	.attr("x",124)
-		    	.attr("y",110)
+		    	.attr("y",15)
 		    	.text(make_percent(Number(data[8][0])/(Number(data[8][0])+Number(data[9][0]))))
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");;
 
 		        
 		});
@@ -286,7 +327,7 @@
 		        .attr("height",50)
 		        .attr("width",50)
 		        .attr("x",100)
-		        .attr("y",50);
+		        .attr("y",10);
 
 		    var utitle = d3.select("#schoolname")
 		    	.selectAll("text")
@@ -306,9 +347,10 @@
 		    	.append("text")
 		    	.attr("class","tuition13")
 		    	.attr("x",124)
-		    	.attr("y",110)
+		    	.attr("y",15)
 		    	.text(data[10][n])
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");;
 
 		    var tuition93 = d3.select(".tuitionframe")
 		    	.selectAll("tuition93")
@@ -317,55 +359,60 @@
 		    	.append("text")
 		    	.attr("class","tuition93")
 		    	.attr("x",124)
-		    	.attr("y",140)
+		    	.attr("y",45)
 		    	.text(data[6][n])
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
-		    var tuition13 = d3.select(".enrollmentframe")
+		    var enroll13 = d3.select(".enrollmentframe")
 		    	.selectAll("enroll13")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","enroll13")
 		    	.attr("x",124)
-		    	.attr("y",140)
-		    	.text(data[3][n])
-		    	.style("text-anchor","middle");
+		    	.attr("y",15)
+		    	.text(data[7][n])
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");;
 
-		    var tuition93 = d3.select(".enrollmentframe")
+		    var enroll93 = d3.select(".enrollmentframe")
 		    	.selectAll("enroll93")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","enroll93")
 		    	.attr("x",124)
-		    	.attr("y",110)
-		    	.text(data[7][n])
-		    	.style("text-anchor","middle");
+		    	.attr("y",45)
+		    	.text(data[3][n])
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
 		    var make_percent = d3.format("%")
 
-		    var tuition93 = d3.select(".personframe")
+		    var person93 = d3.select(".personframe")
 		    	.selectAll("acad93")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","acad93")
 		    	.attr("x",124)
-		    	.attr("y",140)
+		    	.attr("y",45)
 		    	.text(make_percent(Number(data[4][n])/(Number(data[4][n])+Number(data[5][n]))))
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","gray");
 
-		    var tuition93 = d3.select(".personframe")
+		    var person13 = d3.select(".personframe")
 		    	.selectAll("acad13")
 		    	.data(data)
 		    	.enter()
 		    	.append("text")
 		    	.attr("class","acad13")
 		    	.attr("x",124)
-		    	.attr("y",110)
+		    	.attr("y",15)
 		    	.text(make_percent(Number(data[8][n])/(Number(data[8][n])+Number(data[9][n]))))
-		    	.style("text-anchor","middle");
+		    	.style("text-anchor","middle")
+		    	.style("fill","blue");
 
 		}
 		)};
@@ -377,6 +424,7 @@
 		// Read csv and add universities for the dropdown menu
 		d3.csv("universities.csv", function(data){
 		    _.forEach(data, function(element) {
+		    	console.log(element)
 		        d3.select("#university").append("option").attr("value", element.value).text(element.name);
 		    });   
 		});
@@ -582,19 +630,6 @@
 			}									
 
 	</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
