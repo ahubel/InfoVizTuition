@@ -115,14 +115,17 @@
 		<svg id="schoolname"></svg>
 		<svg class="ulogoframe"></svg>
 		<h4 class="charlabel">Tuition (Yearly)</h4>
-		<p class="now" id="tuit13">40,890</p>
-		<p class="then" id="tuit93">28,230</p>
+		<svg class="tuitionframe"></svg>
+<!-- 		<p class="now" id="tuit13">40,890</p>
+		<p class="then" id="tuit93">28,230</p> -->
 		<h4 class="charlabel">Enrollment</h4>
-		<p class="now" id="tuit13">4,900</p>
-		<p class="then" id="tuit93">4,600</p>
+		<svg class="enrollmentframe"></svg>
+<!-- 		<p class="now" id="tuit13">4,900</p>
+		<p class="then" id="tuit93">4,600</p> -->
 		<h4 class="charlabel">Percent Instructional Personnel</h4>
-		<p class="now" id="pct13">60</p>
-		<p class="then" id="pct93">72</p>
+		<svg class="person_frame"></svg>
+<!-- 		<p class="now" id="pct13">60</p>
+		<p class="then" id="pct93">72</p> -->
 	</div>
 	<div id="expend">
 		<h1 class="chartheader">EXPENDITURES</h1>
@@ -137,6 +140,7 @@
 	</script>
 
 	<script>
+
 		d3.csv("centerdata.csv", function(data){
 			console.log(data[0][0]);
 
@@ -162,8 +166,100 @@
 		    	.attr("y",130)
 		    	.text(data[0][0])
 		    	.style("text-anchor","middle");
+
+		    var tuition13 = d3.select(".tuitionframe")
+		    	.selectAll("tuition13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","tuition13")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(data[10][0])
+		    	.style("text-anchor","middle");
+
+		    var tuition93 = d3.select(".tuitionframe")
+		    	.selectAll("tuition93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","tuition93")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(data[6][0])
+		    	.style("text-anchor","middle");
 		        
 		});
+
+
+		function updateCenter(n) { 
+
+			d3.select(".ulogoframe")
+				.selectAll(".ulogo")
+				.remove();
+
+			d3.select("#schoolname")
+				.selectAll(".schoolname")
+				.remove();
+
+			d3.select(".tuitionframe")
+				.selectAll(".tuition13")
+				.remove();
+
+			d3.select(".tuitionframe")
+				.selectAll(".tuition93")
+				.remove();
+
+
+
+		d3.csv("centerdata.csv", function(data){
+
+			var ulogo = d3.select(".ulogoframe")
+				.selectAll("image")
+				.data(data)
+				.enter()
+			    .append("svg:image")
+		        .attr("xlink:href", data[1][n])
+		        .attr("class","ulogo")
+		        .attr("height",50)
+		        .attr("width",50)
+		        .attr("x",100)
+		        .attr("y",50);
+
+		    var utitle = d3.select("#schoolname")
+		    	.selectAll("text")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","schoolname")
+		    	.attr("x",124)
+		    	.attr("y",130)
+		    	.text(data[0][n])
+		    	.style("text-anchor","middle");
+
+		    var tuition13 = d3.select(".tuitionframe")
+		    	.selectAll("tuition13")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","tuition13")
+		    	.attr("x",124)
+		    	.attr("y",110)
+		    	.text(data[10][n])
+		    	.style("text-anchor","middle");
+
+		    var tuition93 = d3.select(".tuitionframe")
+		    	.selectAll("tuition93")
+		    	.data(data)
+		    	.enter()
+		    	.append("text")
+		    	.attr("class","tuition93")
+		    	.attr("x",124)
+		    	.attr("y",140)
+		    	.text(data[6][n])
+		    	.style("text-anchor","middle");
+		}
+		)};
 
 	</script>
 
@@ -642,6 +738,7 @@
 					console.log(schoolindex[i][1]);
 					updateRev(schoolindex[i][1],schoolindex[i][2]);
 					updateExp(schoolindex[i][1],schoolindex[i][2]);
+					updateCenter(schoolindex[i][0]);
 					// updateExp(i[1],i[2]);
 				}
 			}
