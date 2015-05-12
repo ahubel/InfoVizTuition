@@ -169,6 +169,7 @@
 	}
 
 	.chartheader{
+	    margin-bottom: 0px;
 		font-family: "Oswald";
 		text-align: center;
 		font-size: 40px;
@@ -195,6 +196,32 @@
 	.acad13 {
 		color: blue;
 	}
+	
+	#color-label {
+	    margin-top: 20px;
+	    text-align: center;
+	}
+	#color-label-left {
+	    width: 50%;
+	    float: left;
+	}
+	#color-label-right {
+	    width: 50%;
+	    float: right;
+	}
+	#color-label-gray {
+	    padding-right: 15px;
+	    margin-right: 10px;
+	    background-color: gray;
+	}
+	#color-label-blue {
+		padding-right: 15px;
+	    margin-right: 10px;
+	    background-color: blue;
+	}
+	.clear {
+	    clear: both;
+	}
 
 	</style>
 </head>
@@ -209,6 +236,14 @@
 		<h1 class="chartheader">REVENUES</h1>
 	</div>
 	<div id="chars">
+		<div id="color-label">
+			<div id="color-label-left">
+				<p><span id="color-label-gray"></span>1993</p>
+			</div>
+			<div id="color-label-right">
+				<p><span id="color-label-blue"></span>2013</p>
+			</div>
+		</div>
 		<svg id="schoolname"></svg>
 		<svg class="ulogoframe"></svg>
 		<svg class="pub_frame"></svg>
