@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Tuition Dashboard</title>
-	<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
 	<style>
 	#xaxis, #yaxis .domain {
 		fill:black;
@@ -64,6 +64,7 @@
 	.pub_frame {
 		height: 26px;
 		font-style: italic;
+		font-weight: 300;
 		font-family: "Oswald";
 	}
 
@@ -208,7 +209,6 @@
 		<h1 class="chartheader">REVENUES</h1>
 	</div>
 	<div id="chars">
-        
 		<svg id="schoolname"></svg>
 		<svg class="ulogoframe"></svg>
 		<svg class="pub_frame"></svg>
@@ -253,6 +253,7 @@
 		        .attr("width",50)
 		        .attr("x",100)
 		        .attr("y",10);
+
 
 		    var utitle = d3.select("#schoolname")
 		    	.selectAll("text")
