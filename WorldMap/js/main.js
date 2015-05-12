@@ -55,7 +55,7 @@ function loadTuition() {
             element.properties.color = calculateColor(value);
         } else {
             element.properties.value = undefined;
-            element.properties.color = "#AAAAAA";
+            element.properties.color = "#e6e6e6";
         }
     });
 }
@@ -70,7 +70,7 @@ function calculateColor(value) {
 }
 
 function draw(topo) {
-    var country = g.selectAll(".country").data(topo);
+    var country = g.selectAll(".country").data(topo).style("fill","red");
     
     country.enter().insert("path").attr("class", function (d, i) {
         if (d.properties.value == undefined) {
