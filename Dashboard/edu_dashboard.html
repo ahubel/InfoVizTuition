@@ -159,6 +159,10 @@
 		text-align: center;
 		margin-bottom: 5px;
 	}
+	
+	#schoolname{
+		height: 90px;
+	}
 
 	.schoolname{
 		width: 248px;
@@ -243,6 +247,7 @@
 			<div id="color-label-right">
 				<p><span id="color-label-blue"></span>2013</p>
 			</div>
+			<div class="clear"></div>
 		</div>
 		<svg id="schoolname"></svg>
 		<svg class="ulogoframe"></svg>
@@ -297,7 +302,7 @@
 		    	.append("text")
 		    	.attr("class","schoolname")
 		    	.attr("x",124)
-		    	.attr("y",130)
+		    	.attr("y",130-70)
 		    	.text(data[0][0])
 		    	.style("text-anchor","middle");
 
