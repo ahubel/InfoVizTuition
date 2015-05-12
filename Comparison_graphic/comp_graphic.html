@@ -219,10 +219,9 @@ $(document).ready(function(){
   });
   $("#fourteenHypo").click(function(){
     if (this.id == 'fourteenHypo') {
-
-      $(this).addClass('active');
+      $(this).toggleClass('active');
       $(this).siblings().removeClass('active');
-    }
+    };
   });
 });
 </script>
