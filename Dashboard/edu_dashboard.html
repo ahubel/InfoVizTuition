@@ -50,15 +50,15 @@
 	}
 
 	.tuitionframe {
-		height: 60px;
+		height: 50px;
 	}
 
 	.enrollmentframe {
-		height: 60px;
+		height: 50px;
 	}
 
 	.personframe {
-		height: 60px;
+		height: 50px;
 	}
 
 	.pub_frame {
@@ -144,6 +144,10 @@
 		margin-top: 0px;
 	}
 
+	#color-label {
+		font-family: "Oswald";
+		font-size: 14px;
+	}
 	#nowdata {
 		font-family: "Oswald"; 
 	}
@@ -161,7 +165,7 @@
 	}
 	
 	#schoolname{
-		height: 90px;
+		height: 70px;
 	}
 
 	.schoolname{
@@ -435,6 +439,7 @@
 
 		d3.csv("centerdata.csv", function(data){
 
+
 			var ulogo = d3.select(".ulogoframe")
 				.selectAll("image")
 				.data(data)
@@ -454,7 +459,7 @@
 		    	.append("text")
 		    	.attr("class","schoolname")
 		    	.attr("x",124)
-		    	.attr("y",130)
+		    	.attr("y",60)
 		    	.text(data[0][n])
 		    	.style("text-anchor","middle");
 
